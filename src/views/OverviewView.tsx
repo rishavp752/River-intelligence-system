@@ -1,11 +1,10 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import {
   Activity,
   AlertTriangle,
   ArrowRight,
-  Radio,
   ShieldAlert,
-  Sliders,
   Waves,
 } from 'lucide-react';
 import {
@@ -32,6 +31,8 @@ import {
 } from '../types/monitoring';
 import { evaluateStationRisk } from '../data/initialData';
 import { RiverCorridorSvg } from '../components/RiverCorridorSvg';
+import { AnimatedCounter } from '../components/AnimatedCounter';
+import { useTheme } from '../context/ThemeContext';
 
 interface OverviewViewProps {
   stations: Record<StationId, StationData>;
@@ -60,10 +61,24 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   hotspots,
   droneObservations,
 }) => {
+  const { theme } = useTheme();
+  const isNight = theme === 'night';
+  const chartGridColor = isNight ? 'rgba(56, 189, 248, 0.16)' : '#D8EEF8';
+  const chartAxisColor = isNight ? '#9CC0E0' : '#52667A';
+  const tooltipStyle = {
+    backgroundColor: isNight ? 'rgba(7, 22, 44, 0.96)' : 'rgba(255, 255, 255, 0.96)',
+    borderColor: isNight ? 'rgba(0, 242, 254, 0.45)' : '#70CFFF',
+    borderRadius: '12px',
+    fontSize: '12px',
+    color: isNight ? '#ECF6FF' : '#263B50',
+    boxShadow: isNight
+      ? '0 14px 32px rgba(0, 0, 0, 0.55)'
+      : '0 10px 25px rgba(38, 59, 80, 0.1)',
+  };
+
   const stationList = [stations.A, stations.B, stations.C];
   const flaggedCount = stationList.filter((s) => s.isFlagged).length;
 
-  // Prepare station comparison data for Recharts
   const comparisonChartData = [
     {
       name: 'Station A (Upstream)',
@@ -94,113 +109,149 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Top Status Banner */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#20D6D0]/25 bg-[#0B2030] px-5 py-4">
-        <div className="space-y-1">
-          <div className="flex flex-wrap items-center gap-2 text-xs text-[#20D6D0] font-mono">
-            <span>SIMULATED DATA — NOT REAL-TIME FIELD MEASUREMENTS</span>
-            <span aria-hidden="true">·</span>
-            <span>CURRENT SYSTEM STATUS: SIMULATION MODE</span>
+      {/* Main Welcome & Environmental Command Centre Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="glass-panel relative overflow-hidden rounded-2xl p-6 sm:p-7"
+      >
+        {/* Subtle Luminous Water Gradient Accent */}
+        <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-gradient-to-br from-[#20CFC6]/25 to-[#70CFFF]/20 blur-3xl" />
+
+        <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="space-y-2 max-w-3xl">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-semibold text-[#0D9488]">
+              <span>SIMULATED DATA — NOT REAL-TIME FIELD MEASUREMENTS</span>
+              <span aria-hidden="true" className="text-[#71869A]">·</span>
+              <span className="text-[#0284C7]">CURRENT SYSTEM STATUS: SIMULATION MODE</span>
+            </div>
+            <h1 className="text-2xl font-extrabold tracking-tight text-[#263B50] sm:text-3xl">
+              Intelligent River Monitoring &amp; Environmental Analysis
+            </h1>
+            <p className="text-sm text-[#52667A] leading-relaxed">
+              Integrated hydrological command centre combining simulated multi-station IoT telemetry, comparative water-quality analytics, rule-based preliminary risk screening, schematic GIS mapping, and drone-assisted visual inspection.
+            </p>
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
-            Environmental Monitoring Command Centre
-          </h1>
-          <p className="text-sm text-slate-400">
-            Integrated IoT telemetry simulation, preliminary rule-based risk evaluation, and geospatial river corridor intelligence.
-          </p>
-        </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={onToggleSimulation}
-            className="px-4 py-2 text-xs font-semibold rounded-lg border border-[#20D6D0]/40 bg-[#20D6D0]/10 text-[#20D6D0] hover:bg-[#20D6D0]/20 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            {isSimulationRunning ? 'Pause Live Stream' : 'Start Live Stream'}
-          </button>
-          <button
-            onClick={() => onNavigate('live-monitoring')}
-            className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#20D6D0] text-[#061421] hover:bg-[#00AFA7] hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            Open Station Controller
-          </button>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <button
+              onClick={onToggleSimulation}
+              className="min-h-[42px] px-4 py-2 text-xs font-bold rounded-xl border border-[#20CFC6]/60 bg-white/80 text-[#0D9488] hover:bg-[#EDF8FF] transition-all whitespace-nowrap shrink-0 cursor-pointer shadow-xs"
+            >
+              {isSimulationRunning ? 'Pause Live Simulation' : 'Start Live Simulation'}
+            </button>
+            <button
+              onClick={() => onNavigate('live-monitoring')}
+              className="min-h-[42px] px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] text-white hover:opacity-95 transition-all whitespace-nowrap shrink-0 cursor-pointer shadow-[0_8px_20px_-6px_rgba(32,207,198,0.55)]"
+            >
+              Open Station Controller →
+            </button>
+          </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* 5 Required Command-Centre KPI Metrics */}
+      {/* 5 Command-Centre KPI Glass Cards with Animated Counters */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-4">
-          <div className="text-xs text-slate-400">Total Monitoring Stations</div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.04 }}
+          className="glass-card rounded-2xl p-4 sm:p-5"
+        >
+          <div className="text-xs font-semibold text-[#71869A]">Total Monitoring Stations</div>
           <div className="mt-2 flex items-baseline justify-between">
-            <span className="text-3xl font-bold font-mono tabular-nums text-white">3</span>
-            <span className="text-xs font-mono text-[#20D6D0]">STN A · B · C</span>
+            <AnimatedCounter value={3} className="text-3xl font-extrabold text-[#263B50]" />
+            <span className="text-xs font-mono font-semibold text-[#0D9488]">STN A · B · C</span>
           </div>
-          <div className="mt-2 text-xs text-slate-400">
-            Upstream, Midstream & Downstream
+          <div className="mt-2 text-xs text-[#71869A]">
+            Upstream, Midstream &amp; Downstream
           </div>
-        </div>
+        </motion.div>
 
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-4">
-          <div className="text-xs text-slate-400">Connected Simulated Stations</div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
+          className="glass-card rounded-2xl p-4 sm:p-5"
+        >
+          <div className="text-xs font-semibold text-[#71869A]">Connected Simulated Stations</div>
           <div className="mt-2 flex items-baseline justify-between">
-            <span className="text-3xl font-bold font-mono tabular-nums text-[#20D6D0]">3</span>
-            <span className="text-xs font-mono text-emerald-400">● 100% LINKED</span>
+            <AnimatedCounter value={3} className="text-3xl font-extrabold text-[#0D9488]" />
+            <span className="text-xs font-mono font-bold text-emerald-600">● 100% LINKED</span>
           </div>
-          <div className="mt-2 text-xs text-slate-400">
+          <div className="mt-2 text-xs text-[#71869A]">
             Virtual telemetry nodes active
           </div>
-        </div>
+        </motion.div>
 
-        <div className="rounded-xl border border-[#FF7068]/40 bg-[#0B2030] p-4">
-          <div className="text-xs text-slate-400">Flagged Station</div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          className="glass-card rounded-2xl p-4 sm:p-5 border-rose-300/70"
+        >
+          <div className="text-xs font-semibold text-[#71869A]">Flagged Station</div>
           <div className="mt-2 flex items-baseline justify-between">
-            <span className="text-3xl font-bold font-mono tabular-nums text-[#FF7068]">
-              {flaggedCount}
-            </span>
-            <span className="text-xs font-mono text-[#FF7068]">▲ STATION B</span>
+            <AnimatedCounter value={flaggedCount} className="text-3xl font-extrabold text-rose-600" />
+            <span className="text-xs font-mono font-bold text-rose-600">▲ STATION B</span>
           </div>
-          <div className="mt-2 text-xs text-slate-300">
-            Peak Turbidity & Conductivity
+          <div className="mt-2 text-xs text-[#52667A]">
+            Peak Turbidity &amp; Conductivity
           </div>
-        </div>
+        </motion.div>
 
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-4">
-          <div className="text-xs text-slate-400">Water Parameters Monitored</div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.16 }}
+          className="glass-card rounded-2xl p-4 sm:p-5"
+        >
+          <div className="text-xs font-semibold text-[#71869A]">Water Parameters Monitored</div>
           <div className="mt-2 flex items-baseline justify-between">
-            <span className="text-3xl font-bold font-mono tabular-nums text-white">5</span>
-            <span className="text-xs font-mono text-slate-300">CORE SENSORS</span>
+            <AnimatedCounter value={5} className="text-3xl font-extrabold text-[#263B50]" />
+            <span className="text-xs font-mono font-semibold text-[#0284C7]">CORE SENSORS</span>
           </div>
-          <div className="mt-2 text-xs text-slate-400">
+          <div className="mt-2 text-xs text-[#71869A]">
             pH · Temp · Turbidity · DO · EC
           </div>
-        </div>
+        </motion.div>
 
-        <div className="rounded-xl border border-[#F4B942]/30 bg-[#0B2030] p-4">
-          <div className="text-xs text-slate-400">Current System Status</div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="glass-card rounded-2xl p-4 sm:p-5"
+        >
+          <div className="text-xs font-semibold text-[#71869A]">Current System Status</div>
           <div className="mt-2 flex items-baseline justify-between">
-            <span className="text-lg font-bold font-mono text-[#F4B942]">
+            <span className="text-base sm:text-lg font-extrabold font-mono text-[#0D9488]">
               SIMULATION MODE
             </span>
           </div>
-          <div className="mt-2 text-xs text-slate-400">
+          <div className="mt-2 text-xs text-[#71869A]">
             Controlled demo dataset active
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Animated River Visualization & Interactive Station Selector */}
-      <div className="space-y-3">
+      <div className="glass-panel rounded-2xl p-5 sm:p-6 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="text-lg font-semibold text-white">
-              Interactive River Corridor & Station Telemetry Preview
+            <div className="text-xs font-mono font-semibold text-[#0D9488]">
+              HYDROLOGICAL CORRIDOR &amp; RIVER HEALTH OVERVIEW
+            </div>
+            <h2 className="text-lg font-bold text-[#263B50]">
+              Interactive River Corridor &amp; Station Telemetry Preview
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#71869A]">
               Click Station A, B, or C on the river schematic to inspect live simulated measurements, or open the full GIS Pollution Map.
             </p>
           </div>
           <button
             onClick={() => onNavigate('gis-map')}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#20D6D0] hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[#20CFC6]/45 bg-white/80 px-3.5 py-2 text-xs font-bold text-[#0D9488] hover:bg-[#EDF8FF] transition-colors cursor-pointer"
           >
             <span>Open Full Multi-Layer GIS Map</span>
             <ArrowRight className="h-3.5 w-3.5" />
@@ -218,132 +269,141 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         />
       </div>
 
-      {/* Latest Simulated Readings Across All 3 Stations */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {(['A', 'B', 'C'] as StationId[]).map((id) => {
+      {/* Water Quality & Pollution Indicators Across All 3 Stations */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        {(['A', 'B', 'C'] as StationId[]).map((id, idx) => {
           const st = stations[id];
           const risk = evaluateStationRisk(id, st.readings);
           const isSelected = selectedStation === id;
 
           return (
-            <div
+            <motion.div
               key={id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.06 * idx }}
               onClick={() => onSelectStation(id)}
-              className={`rounded-xl border p-5 transition-colors cursor-pointer ${
+              className={`glass-card rounded-2xl p-5 cursor-pointer ${
                 st.isFlagged
-                  ? 'border-[#FF7068]/60 bg-[#0B2030]'
+                  ? 'border-rose-300/80 ring-1 ring-rose-200/60'
                   : isSelected
-                  ? 'border-[#20D6D0] bg-[#0B2030]'
-                  : 'border-slate-800 bg-[#0B2030]/90 hover:border-slate-700'
+                  ? 'border-[#20CFC6] ring-2 ring-[#20CFC6]/30'
+                  : ''
               }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-                    <span>{st.code}</span>
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#71869A]">
+                    <span className="font-semibold text-[#263B50]">{st.code}</span>
                     <span aria-hidden="true">·</span>
                     <span
                       className={
                         st.isFlagged
-                          ? 'text-[#FF7068] font-semibold'
+                          ? 'text-rose-600 font-bold'
                           : id === 'C'
-                          ? 'text-[#F4B942]'
-                          : 'text-[#20D6D0]'
+                          ? 'text-amber-600 font-semibold'
+                          : 'text-[#0D9488] font-semibold'
                       }
                     >
                       {st.isFlagged ? '▲ FLAGGED ANOMALY' : '● CONNECTED'}
                     </span>
                   </div>
-                  <h3 className="mt-1 text-base font-bold text-white">{st.name}</h3>
+                  <h3 className="mt-1 text-base font-bold text-[#263B50]">{st.name}</h3>
                 </div>
                 <span
-                  className={`text-xs font-mono font-semibold ${
+                  className={`text-xs font-mono font-bold ${
                     risk.level === 'High'
-                      ? 'text-[#FF7068]'
+                      ? 'text-rose-600'
                       : risk.level === 'Medium'
-                      ? 'text-[#F4B942]'
-                      : 'text-[#20D6D0]'
+                      ? 'text-amber-600'
+                      : 'text-[#0D9488]'
                   }`}
                 >
                   RISK: {risk.level.toUpperCase()} ({risk.score}/100)
                 </span>
               </div>
 
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 border-t border-slate-800/80 pt-4">
-                <div>
-                  <div className="text-xs text-slate-400">pH</div>
-                  <div className="mt-0.5 text-lg font-bold font-mono tabular-nums text-white">
-                    {st.readings.ph}
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 border-t border-[#70CFFF]/25 pt-4">
+                <div className="glass-subcard rounded-xl p-2.5">
+                  <div className="text-[11px] font-medium text-[#71869A]">pH Level</div>
+                  <div className="mt-0.5 text-lg font-extrabold text-[#263B50]">
+                    <AnimatedCounter value={st.readings.ph} decimals={1} />
                   </div>
                 </div>
-                <div>
-                  <div className="text-xs text-slate-400">Temperature</div>
-                  <div className="mt-0.5 text-lg font-bold font-mono tabular-nums text-white">
-                    {st.readings.temperature}
-                    <span className="ml-1 text-xs font-normal text-slate-400">°C</span>
+                <div className="glass-subcard rounded-xl p-2.5">
+                  <div className="text-[11px] font-medium text-[#71869A]">Temperature</div>
+                  <div className="mt-0.5 text-lg font-extrabold text-[#263B50]">
+                    <AnimatedCounter value={st.readings.temperature} decimals={1} suffix="°C" />
                   </div>
                 </div>
-                <div>
-                  <div className="text-xs text-slate-400">Turbidity</div>
+                <div className="glass-subcard rounded-xl p-2.5">
+                  <div className="text-[11px] font-medium text-[#71869A]">Turbidity</div>
                   <div
-                    className={`mt-0.5 text-lg font-bold font-mono tabular-nums ${
-                      st.readings.turbidity >= 28 ? 'text-[#FF7068]' : 'text-white'
+                    className={`mt-0.5 text-lg font-extrabold ${
+                      st.readings.turbidity >= 28 ? 'text-rose-600' : 'text-[#263B50]'
                     }`}
                   >
-                    {st.readings.turbidity}
-                    <span className="ml-1 text-xs font-normal text-slate-400">NTU</span>
+                    <AnimatedCounter value={st.readings.turbidity} decimals={0} suffix=" NTU" />
                   </div>
                 </div>
-                <div>
-                  <div className="text-xs text-slate-400">Dissolved O₂</div>
+                <div className="glass-subcard rounded-xl p-2.5">
+                  <div className="text-[11px] font-medium text-[#71869A]">Dissolved O₂</div>
                   <div
-                    className={`mt-0.5 text-lg font-bold font-mono tabular-nums ${
-                      st.readings.dissolvedOxygen <= 5.2 ? 'text-[#FF7068]' : 'text-white'
+                    className={`mt-0.5 text-lg font-extrabold ${
+                      st.readings.dissolvedOxygen <= 5.2 ? 'text-rose-600' : 'text-[#0D9488]'
                     }`}
                   >
-                    {st.readings.dissolvedOxygen}
-                    <span className="ml-1 text-xs font-normal text-slate-400">mg/L</span>
+                    <AnimatedCounter
+                      value={st.readings.dissolvedOxygen}
+                      decimals={1}
+                      suffix=" mg/L"
+                    />
                   </div>
                 </div>
-                <div className="col-span-2 sm:col-span-2">
-                  <div className="text-xs text-slate-400">Electrical Conductivity</div>
+                <div className="col-span-2 sm:col-span-2 glass-subcard rounded-xl p-2.5">
+                  <div className="text-[11px] font-medium text-[#71869A]">
+                    Electrical Conductivity
+                  </div>
                   <div
-                    className={`mt-0.5 text-lg font-bold font-mono tabular-nums ${
-                      st.readings.conductivity >= 550 ? 'text-[#F4B942]' : 'text-white'
+                    className={`mt-0.5 text-lg font-extrabold ${
+                      st.readings.conductivity >= 550 ? 'text-amber-600' : 'text-[#0284C7]'
                     }`}
                   >
-                    {st.readings.conductivity}
-                    <span className="ml-1 text-xs font-normal text-slate-400">µS/cm</span>
+                    <AnimatedCounter
+                      value={st.readings.conductivity}
+                      decimals={0}
+                      suffix=" µS/cm"
+                    />
                   </div>
                 </div>
               </div>
 
               {st.highlightSummary && (
-                <div className="mt-3 border-t border-slate-800/80 pt-3 text-xs text-slate-300">
+                <div className="mt-3 border-t border-[#70CFFF]/25 pt-3 text-xs font-medium text-[#52667A]">
                   {st.highlightSummary.join(' · ')}
                 </div>
               )}
-            </div>
+            </motion.div>
           );
         })}
       </div>
 
-      {/* Charts Row: Station Comparison Chart & Water Quality Trends */}
+      {/* Charts Row: Cross-Station Comparison Chart & Water Quality Trends */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Multi-Parameter Station Comparison */}
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5">
+        <div className="glass-panel rounded-2xl p-5 sm:p-6">
           <div className="flex items-center justify-between gap-2 mb-4">
             <div>
-              <h3 className="text-base font-semibold text-white">
+              <h3 className="text-base font-bold text-[#263B50]">
                 Cross-Station Parameter Comparison
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#71869A]">
                 Normalized comparison of Turbidity (NTU), Dissolved O₂ (×10 mg/L), and Conductivity (÷10 µS/cm)
               </p>
             </div>
             <button
               onClick={() => onNavigate('water-analytics')}
-              className="text-xs font-medium text-[#20D6D0] hover:underline whitespace-nowrap shrink-0 cursor-pointer"
+              className="text-xs font-bold text-[#0D9488] hover:underline whitespace-nowrap shrink-0 cursor-pointer"
             >
               Full Analytics →
             </button>
@@ -352,90 +412,78 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={comparisonChartData} margin={{ top: 10, right: 16, left: -12, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" />
-                <XAxis dataKey="name" stroke="#94A3B8" fontSize={11} />
-                <YAxis stroke="#94A3B8" fontSize={11} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#061421',
-                    borderColor: '#1E293B',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    color: '#F1F5F9',
-                  }}
-                />
-                <Legend wrapperStyle={{ fontSize: '12px' }} />
-                <Bar dataKey="Turbidity" fill="#FF7068" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Dissolved O₂ (×10)" fill="#20D6D0" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Conductivity (÷10)" fill="#F4B942" radius={[4, 4, 0, 0]} />
+                <CartesianGrid strokeDasharray="3 3" stroke={chartGridColor} />
+                <XAxis dataKey="name" stroke={chartAxisColor} fontSize={11} />
+                <YAxis stroke={chartAxisColor} fontSize={11} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Legend wrapperStyle={{ fontSize: '12px', color: chartAxisColor }} />
+                <Bar dataKey="Turbidity" fill="#F43F5E" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="Dissolved O₂ (×10)" fill="#20CFC6" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="Conductivity (÷10)" fill="#38BDF8" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Simulated Turbidity Trend */}
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5">
+        <div className="glass-panel rounded-2xl p-5 sm:p-6">
           <div className="flex items-center justify-between gap-2 mb-4">
             <div>
-              <h3 className="text-base font-semibold text-white">
+              <h3 className="text-base font-bold text-[#263B50]">
                 Water Quality Trend — Turbidity (NTU)
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#71869A]">
                 Simulated temporal progression across Upstream (A), Midstream (B), and Downstream (C)
               </p>
             </div>
-            <span className="text-xs font-mono text-slate-400">DEMO TIME SERIES</span>
+            <span className="text-xs font-mono font-semibold text-[#0D9488]">DEMO TIME SERIES</span>
           </div>
 
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={trendChartData} margin={{ top: 10, right: 16, left: -12, bottom: 5 }}>
                 <defs>
-                  <linearGradient id="gradB" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#FF7068" stopOpacity={0.35} />
-                    <stop offset="95%" stopColor="#FF7068" stopOpacity={0} />
+                  <linearGradient id="gradBLight" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#F43F5E" stopOpacity={0.28} />
+                    <stop offset="95%" stopColor="#F43F5E" stopOpacity={0.02} />
                   </linearGradient>
-                  <linearGradient id="gradC" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#F4B942" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#F4B942" stopOpacity={0} />
+                  <linearGradient id="gradCLight" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#38BDF8" stopOpacity={0.26} />
+                    <stop offset="95%" stopColor="#38BDF8" stopOpacity={0.02} />
+                  </linearGradient>
+                  <linearGradient id="gradALight" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#20CFC6" stopOpacity={0.32} />
+                    <stop offset="95%" stopColor="#20CFC6" stopOpacity={0.04} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" />
-                <XAxis dataKey="time" stroke="#94A3B8" fontSize={11} />
-                <YAxis stroke="#94A3B8" fontSize={11} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#061421',
-                    borderColor: '#1E293B',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    color: '#F1F5F9',
-                  }}
-                />
-                <Legend wrapperStyle={{ fontSize: '12px' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke={chartGridColor} />
+                <XAxis dataKey="time" stroke={chartAxisColor} fontSize={11} />
+                <YAxis stroke={chartAxisColor} fontSize={11} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Legend wrapperStyle={{ fontSize: '12px', color: chartAxisColor }} />
                 <Area
                   type="monotone"
                   dataKey="Station B"
-                  stroke="#FF7068"
-                  strokeWidth={2}
+                  stroke="#F43F5E"
+                  strokeWidth={2.5}
                   fillOpacity={1}
-                  fill="url(#gradB)"
+                  fill="url(#gradBLight)"
                 />
                 <Area
                   type="monotone"
                   dataKey="Station C"
-                  stroke="#F4B942"
-                  strokeWidth={2}
+                  stroke="#38BDF8"
+                  strokeWidth={2.5}
                   fillOpacity={1}
-                  fill="url(#gradC)"
+                  fill="url(#gradCLight)"
                 />
                 <Area
                   type="monotone"
                   dataKey="Station A"
-                  stroke="#20D6D0"
-                  strokeWidth={2}
-                  fillOpacity={0.1}
-                  fill="#20D6D0"
+                  stroke="#20CFC6"
+                  strokeWidth={2.5}
+                  fillOpacity={1}
+                  fill="url(#gradALight)"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -446,37 +494,37 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       {/* Bottom 3-Column Row: Pollution Alert Panel, AI Risk Overview, and Recent System Activity */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Pollution Alert Panel */}
-        <div className="rounded-xl border border-[#FF7068]/40 bg-[#0B2030] p-5 flex flex-col justify-between">
+        <div className="glass-card rounded-2xl border-rose-300/70 p-5 sm:p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-xs font-mono text-[#FF7068]">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-rose-600">
                 <AlertTriangle className="h-4 w-4" />
                 <span>ACTIVE DEMONSTRATION ALERT</span>
               </div>
               <button
                 onClick={() => onNavigate('alerts-reports')}
-                className="text-xs font-medium text-[#20D6D0] hover:underline cursor-pointer"
+                className="text-xs font-bold text-[#0D9488] hover:underline cursor-pointer"
               >
                 All Alerts ({alerts.length}) →
               </button>
             </div>
 
-            <h3 className="mt-3 text-base font-bold text-white">
+            <h3 className="mt-3 text-base font-bold text-[#263B50]">
               Station B — Midstream Anomaly Flagged
             </h3>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+            <p className="mt-2 text-sm text-[#52667A] leading-relaxed">
               Station B shows the highest turbidity ({stations.B.readings.turbidity} NTU) and conductivity ({stations.B.readings.conductivity} µS/cm) and the lowest dissolved oxygen ({stations.B.readings.dissolvedOxygen} mg/L) among the three simulated stations. Further investigation is recommended.
             </p>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-            <span>Severity: High Priority</span>
+          <div className="mt-4 pt-3 border-t border-[#70CFFF]/30 flex items-center justify-between text-xs text-[#71869A]">
+            <span className="font-medium">Severity: High Priority</span>
             <button
               onClick={() => {
                 onSelectStation('B');
                 onNavigate('live-monitoring');
               }}
-              className="font-semibold text-[#FF7068] hover:underline cursor-pointer"
+              className="font-bold text-rose-600 hover:underline cursor-pointer"
             >
               Inspect Station B →
             </button>
@@ -484,44 +532,44 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </div>
 
         {/* AI Preliminary Risk Overview */}
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 flex flex-col justify-between">
+        <div className="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-xs font-mono text-[#20D6D0]">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#0D9488]">
                 <ShieldAlert className="h-4 w-4" />
                 <span>RULE-BASED PRELIMINARY RISK</span>
               </div>
               <button
                 onClick={() => onNavigate('ai-risk')}
-                className="text-xs font-medium text-[#20D6D0] hover:underline cursor-pointer"
+                className="text-xs font-bold text-[#0D9488] hover:underline cursor-pointer"
               >
                 ML Workflow →
               </button>
             </div>
 
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 space-y-2.5">
               {(['A', 'B', 'C'] as StationId[]).map((id) => {
                 const r = evaluateStationRisk(id, stations[id].readings);
                 return (
                   <div
                     key={id}
-                    className="flex items-center justify-between rounded-lg border border-slate-800/90 bg-[#061421]/60 px-3.5 py-2.5"
+                    className="glass-subcard flex items-center justify-between rounded-xl px-3.5 py-2.5"
                   >
                     <div>
-                      <div className="text-xs font-semibold text-white">
+                      <div className="text-xs font-bold text-[#263B50]">
                         Station {id} ({stations[id].role})
                       </div>
-                      <div className="text-xs text-slate-400 font-mono">
+                      <div className="text-xs text-[#71869A] font-mono">
                         Index Score: {r.score}/100
                       </div>
                     </div>
                     <span
                       className={`text-xs font-mono font-bold ${
                         r.level === 'High'
-                          ? 'text-[#FF7068]'
+                          ? 'text-rose-600'
                           : r.level === 'Medium'
-                          ? 'text-[#F4B942]'
-                          : 'text-[#20D6D0]'
+                          ? 'text-amber-600'
+                          : 'text-[#0D9488]'
                       }`}
                     >
                       {r.level.toUpperCase()} RISK
@@ -532,42 +580,42 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400">
+          <div className="mt-4 pt-3 border-t border-[#70CFFF]/30 text-xs text-[#71869A]">
             Preliminary rule-based evaluation. Actual ML validation requires a labelled dataset.
           </div>
         </div>
 
         {/* Recent System Activity */}
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 flex flex-col justify-between">
+        <div className="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
-                <Activity className="h-4 w-4 text-[#20D6D0]" />
-                <span>RECENT SIMULATION ACTIVITY</span>
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#263B50]">
+                <Activity className="h-4 w-4 text-[#0D9488]" />
+                <span>RECENT MONITORING ACTIVITY</span>
               </div>
-              <span className="text-xs font-mono text-slate-500">LOCAL LOG</span>
+              <span className="text-xs font-mono text-[#71869A]">SESSION LOG</span>
             </div>
 
-            <div className="mt-3 divide-y divide-slate-800/80">
+            <div className="mt-3 divide-y divide-[#70CFFF]/25">
               {activityLog.slice(0, 4).map((item) => (
                 <div key={item.id} className="py-2.5 first:pt-0 last:pb-0">
-                  <div className="flex items-center justify-between text-xs font-mono text-slate-400">
-                    <span className="text-[#20D6D0]">{item.module}</span>
+                  <div className="flex items-center justify-between text-xs font-mono text-[#71869A]">
+                    <span className="font-semibold text-[#0D9488]">{item.module}</span>
                     <span>{item.timestamp}</span>
                   </div>
-                  <p className="mt-0.5 text-xs text-slate-200">{item.description}</p>
+                  <p className="mt-0.5 text-xs text-[#263B50]">{item.description}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-            <span>Self-contained local session</span>
+          <div className="mt-4 pt-3 border-t border-[#70CFFF]/30 flex items-center justify-between text-xs text-[#71869A]">
+            <span>Self-contained local simulation</span>
             <button
               onClick={() => onNavigate('system-architecture')}
-              className="text-[#20D6D0] hover:underline cursor-pointer"
+              className="font-bold text-[#0D9488] hover:underline cursor-pointer"
             >
-              View System Architecture →
+              System Architecture →
             </button>
           </div>
         </div>

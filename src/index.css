@@ -1,17 +1,47 @@
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+    /* Day Mode (Default) Tokens */
+    --bg-primary: #F7FCFF;
+    --bg-secondary: #EDF8FF;
+    --text-primary: #183048;
+    --text-secondary: #4B637A;
+    --text-muted: #6C849C;
+    --accent-aqua: #0D9488;
+    --accent-sky: #0284C7;
+    --chart-grid: #D5ECF8;
+    --chart-tick: #4B637A;
+    --tooltip-bg: rgba(255, 255, 255, 0.96);
+    --tooltip-border: #70CFFF;
+    --tooltip-text: #183048;
+  }
+
+  html.theme-night {
+    --bg-primary: #040D1A;
+    --bg-secondary: #08182E;
+    --text-primary: #ECF6FF;
+    --text-secondary: #9CC0E0;
+    --text-muted: #6E94B8;
+    --accent-aqua: #20E3B2;
+    --accent-sky: #38BDF8;
+    --chart-grid: rgba(56, 189, 248, 0.16);
+    --chart-tick: #9CC0E0;
+    --tooltip-bg: rgba(7, 22, 44, 0.96);
+    --tooltip-border: rgba(0, 242, 254, 0.45);
+    --tooltip-text: #ECF6FF;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #061421;
-    color: #F1F5F9;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     overflow-x: hidden;
+    transition: background-color 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   code, pre, .font-mono {
@@ -24,15 +54,299 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Subtle technical coordinate background grid */
+/* ============================================================================
+   AQUA NEXUS — DAY & NIGHT LIQUID AMBIENT ENVIRONMENT
+   ============================================================================ */
+
+.aquatic-mesh-bg {
+  background-color: #F6FCFF;
+  background-image:
+    radial-gradient(at 10% 8%, rgba(201, 245, 245, 0.72) 0px, transparent 52%),
+    radial-gradient(at 88% 14%, rgba(112, 207, 255, 0.32) 0px, transparent 50%),
+    radial-gradient(at 50% 88%, rgba(234, 247, 255, 0.92) 0px, transparent 62%);
+  transition: background-color 0.6s ease, background-image 0.6s ease;
+}
+
+html.theme-night .aquatic-mesh-bg {
+  background-color: #040D1A;
+  background-image:
+    radial-gradient(at 12% 10%, rgba(0, 242, 254, 0.15) 0px, transparent 52%),
+    radial-gradient(at 86% 18%, rgba(14, 165, 233, 0.16) 0px, transparent 50%),
+    radial-gradient(at 50% 88%, rgba(10, 31, 60, 0.88) 0px, transparent 64%);
+}
+
+/* Subtle Hydrographic Coordinate Grid */
 .bg-tech-grid {
-  background-image: 
-    linear-gradient(to right, rgba(32, 214, 208, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(32, 214, 208, 0.04) 1px, transparent 1px);
+  background-image:
+    linear-gradient(to right, rgba(32, 207, 198, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(112, 207, 255, 0.1) 1px, transparent 1px);
   background-size: 36px 36px;
 }
 
-/* Animated river flow dash */
+html.theme-night .bg-tech-grid {
+  background-image:
+    linear-gradient(to right, rgba(0, 242, 254, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* ============================================================================
+   LIQUID GLASS UI SURFACES (DAY & NIGHT ADAPTIVE)
+   ============================================================================ */
+
+.glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.82) 0%,
+    rgba(244, 251, 255, 0.68) 100%
+  );
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(32, 207, 198, 0.28);
+  box-shadow:
+    0 16px 40px -12px rgba(24, 48, 72, 0.07),
+    0 4px 18px -4px rgba(32, 207, 198, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.92);
+  transition: background 0.45s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+html.theme-night .glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(9, 25, 48, 0.78) 0%,
+    rgba(6, 17, 34, 0.7) 100%
+  );
+  border: 1px solid rgba(0, 242, 254, 0.26);
+  box-shadow:
+    0 20px 48px -12px rgba(0, 0, 0, 0.55),
+    0 4px 22px -4px rgba(0, 242, 254, 0.12),
+    inset 0 1px 0 0 rgba(125, 211, 252, 0.18);
+}
+
+.glass-card {
+  position: relative;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.74) 0%,
+    rgba(238, 249, 255, 0.58) 100%
+  );
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(112, 207, 255, 0.34);
+  box-shadow:
+    0 12px 30px -10px rgba(24, 48, 72, 0.06),
+    0 2px 12px -2px rgba(32, 207, 198, 0.07),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.92);
+  transition:
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.28s ease,
+    background 0.45s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(32, 207, 198, 0.62);
+  box-shadow:
+    0 20px 42px -12px rgba(24, 48, 72, 0.1),
+    0 8px 24px -4px rgba(32, 207, 198, 0.18),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.98);
+}
+
+html.theme-night .glass-card {
+  background: linear-gradient(
+    145deg,
+    rgba(11, 30, 56, 0.74) 0%,
+    rgba(7, 20, 39, 0.64) 100%
+  );
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  box-shadow:
+    0 14px 34px -10px rgba(0, 0, 0, 0.5),
+    0 2px 14px -2px rgba(0, 242, 254, 0.08),
+    inset 0 1px 0 0 rgba(125, 211, 252, 0.15);
+}
+
+html.theme-night .glass-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 242, 254, 0.55);
+  box-shadow:
+    0 22px 46px -12px rgba(0, 0, 0, 0.68),
+    0 8px 28px -4px rgba(0, 242, 254, 0.22),
+    inset 0 1px 0 0 rgba(125, 211, 252, 0.28);
+}
+
+.glass-subcard {
+  background: rgba(235, 248, 255, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(112, 207, 255, 0.3);
+  transition: background 0.45s ease, border-color 0.4s ease;
+}
+
+html.theme-night .glass-subcard {
+  background: rgba(6, 18, 36, 0.72);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* ============================================================================
+   AUTOMATIC NIGHT MODE TEXT & SURFACE HARMONIZATION
+   Ensures every view card, table, badge, and input adapts seamlessly in Night Mode
+   ============================================================================ */
+
+html.theme-night .text-\[\#263B50\] {
+  color: #ECF6FF !important;
+}
+
+html.theme-night .text-\[\#52667A\] {
+  color: #9CC0E0 !important;
+}
+
+html.theme-night .text-\[\#71869A\] {
+  color: #7298BC !important;
+}
+
+html.theme-night .text-\[\#0D9488\],
+html.theme-night .text-\[\#0E7490\] {
+  color: #20E3B2 !important;
+}
+
+html.theme-night .text-\[\#0284C7\],
+html.theme-night .text-\[\#0369A1\] {
+  color: #38BDF8 !important;
+}
+
+html.theme-night .text-amber-700,
+html.theme-night .text-amber-800,
+html.theme-night .text-amber-600,
+html.theme-night .text-\[\#D97706\] {
+  color: #FBBF24 !important;
+}
+
+html.theme-night .text-rose-600 {
+  color: #FB7185 !important;
+}
+
+html.theme-night .text-emerald-600,
+html.theme-night .text-emerald-700,
+html.theme-night .text-emerald-800 {
+  color: #34D399 !important;
+}
+
+html.theme-night .bg-white,
+html.theme-night .bg-white\/85,
+html.theme-night .bg-white\/80,
+html.theme-night .bg-white\/75,
+html.theme-night .bg-white\/70,
+html.theme-night .bg-white\/60 {
+  background-color: rgba(11, 29, 54, 0.82) !important;
+  color: #ECF6FF;
+}
+
+html.theme-night .bg-\[\#EDF8FF\],
+html.theme-night .bg-\[\#EDF8FF\]\/90 {
+  background-color: rgba(7, 20, 39, 0.85) !important;
+}
+
+html.theme-night .bg-\[\#C9F5F5\]\/65,
+html.theme-night .bg-\[\#C9F5F5\]\/75 {
+  background-color: rgba(0, 242, 254, 0.16) !important;
+}
+
+html.theme-night .bg-rose-50\/80,
+html.theme-night .bg-rose-50\/75,
+html.theme-night .bg-rose-50 {
+  background-color: rgba(244, 63, 94, 0.14) !important;
+}
+
+html.theme-night .bg-amber-50\/90,
+html.theme-night .bg-amber-50\/75,
+html.theme-night .bg-amber-50\/70 {
+  background-color: rgba(245, 158, 11, 0.14) !important;
+}
+
+html.theme-night .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+html.theme-night input:not([type="range"]),
+html.theme-night select,
+html.theme-night textarea {
+  background-color: rgba(6, 17, 34, 0.9) !important;
+  border-color: rgba(56, 189, 248, 0.35) !important;
+  color: #ECF6FF !important;
+}
+
+/* ============================================================================
+   NEXT-LEVEL INTERACTIVE BUTTONS (HOVER LIFT, SPECULAR REFLECTION, PRESS SPRING)
+   ============================================================================ */
+
+.btn-liquid-primary,
+button.bg-gradient-to-r,
+label.bg-gradient-to-r {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.22s ease;
+}
+
+.btn-liquid-primary::after,
+button.bg-gradient-to-r::after,
+label.bg-gradient-to-r::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 45%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  transition: left 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.btn-liquid-primary:hover::after,
+button.bg-gradient-to-r:hover::after,
+label.bg-gradient-to-r:hover::after {
+  left: 125%;
+}
+
+.btn-liquid-primary:hover,
+button.bg-gradient-to-r:hover,
+label.bg-gradient-to-r:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px -4px rgba(32, 207, 198, 0.52);
+}
+
+.btn-liquid-primary:active,
+button.bg-gradient-to-r:active,
+label.bg-gradient-to-r:active {
+  transform: translateY(0px) scale(0.97);
+}
+
+button:not(.bg-gradient-to-r) {
+  transition:
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.18s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+button:not(.bg-gradient-to-r):active {
+  transform: scale(0.97);
+}
+
+/* ============================================================================
+   KEYFRAME ANIMATIONS (WATER FLOW, ORB DRIFT, MOTE RISE, DRONE SCAN)
+   ============================================================================ */
+
 @keyframes riverFlow {
   0% {
     stroke-dashoffset: 120;
@@ -44,17 +358,93 @@
 
 .animate-river-flow {
   stroke-dasharray: 8 16;
-  animation: riverFlow 4.5s linear infinite;
+  animation: riverFlow 4.2s linear infinite;
 }
 
 .animate-river-flow-slow {
   stroke-dasharray: 4 20;
-  animation: riverFlow 7s linear infinite;
+  animation: riverFlow 6.8s linear infinite;
+}
+
+@keyframes waveDrift {
+  0% {
+    transform: translateX(0) translateZ(0);
+  }
+  50% {
+    transform: translateX(-28px) translateZ(0);
+  }
+  100% {
+    transform: translateX(0) translateZ(0);
+  }
+}
+
+.animate-wave-drift {
+  animation: waveDrift 9s ease-in-out infinite;
+}
+
+@keyframes orbFloat {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(24px, -18px) scale(1.05);
+  }
+}
+
+.animate-orb-float {
+  animation: orbFloat 16s ease-in-out infinite;
+}
+
+.animate-orb-float-delayed {
+  animation: orbFloat 19s ease-in-out 3s infinite reverse;
+}
+
+@keyframes moteRise {
+  0% {
+    transform: translateY(0px) scale(0.85);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-28px) scale(1.15);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-56px) scale(0.85);
+    opacity: 0.15;
+  }
+}
+
+.animate-mote-rise {
+  animation: moteRise 12s ease-in-out infinite;
+}
+
+@keyframes droneScanLine {
+  0% {
+    top: 4%;
+    opacity: 0.85;
+  }
+  50% {
+    top: 92%;
+    opacity: 0.98;
+  }
+  100% {
+    top: 4%;
+    opacity: 0.85;
+  }
+}
+
+.animate-drone-scan {
+  animation: droneScanLine 4.2s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-river-flow,
-  .animate-river-flow-slow {
+  .animate-river-flow-slow,
+  .animate-wave-drift,
+  .animate-orb-float,
+  .animate-orb-float-delayed,
+  .animate-mote-rise,
+  .animate-drone-scan {
     animation: none;
   }
 }

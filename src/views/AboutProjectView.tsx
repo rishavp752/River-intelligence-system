@@ -5,11 +5,7 @@ import {
   ArrowRight,
   BrainCircuit,
   Camera,
-  Cpu,
-  FlaskConical,
-  Layers,
   Map,
-  ShieldAlert,
 } from 'lucide-react';
 import { NavigationTab } from '../types/monitoring';
 
@@ -182,57 +178,79 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
 }) => {
   return (
     <div className="space-y-6">
-      {/* Academic Research Presentation Hero */}
+      {/* Academic Research Presentation Hero with Ambient Water Wave Backdrop */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2 }}
-        className="rounded-xl border border-[#20D6D0]/35 bg-[#0B2030] p-5 sm:p-6"
+        transition={{ duration: 0.25 }}
+        className="relative overflow-hidden glass-panel rounded-2xl p-6 sm:p-8"
       >
-        <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#20D6D0]">
-          <span>ASANSOL ENGINEERING COLLEGE</span>
-          <span aria-hidden="true">·</span>
-          <span>DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING</span>
-          <span aria-hidden="true">·</span>
-          <span>ACADEMIC SESSION 2026–2027</span>
-          <span aria-hidden="true">·</span>
-          <span>GROUP NUMBER: 4</span>
-        </div>
+        {/* Subtle Animated Water Wave SVG Backdrop */}
+        <svg
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-28 w-full opacity-35"
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,45 C360,115 720,-15 1080,55 C1260,90 1380,40 1440,35 L1440,120 L0,120 Z"
+            fill="url(#aboutWaveGrad)"
+          />
+          <defs>
+            <linearGradient id="aboutWaveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#20CFC6" stopOpacity="0.35" />
+              <stop offset="50%" stopColor="#70CFFF" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#C9F5F5" stopOpacity="0.35" />
+            </linearGradient>
+          </defs>
+        </svg>
 
-        <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-          PROJECT: RIVER INTELLIGENCE
-        </h1>
-        <p className="mt-1 text-sm sm:text-base font-medium text-[#20D6D0]">
-          IoT- and AI-Based River Water Quality Monitoring with Heavy Metal Risk Prediction and Drone-Assisted Pollution Mapping
-        </p>
+        <div className="relative z-10">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-[#0D9488]">
+            <span>ASANSOL ENGINEERING COLLEGE</span>
+            <span aria-hidden="true">·</span>
+            <span>DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING</span>
+            <span aria-hidden="true">·</span>
+            <span>ACADEMIC SESSION 2026–2027</span>
+            <span aria-hidden="true">·</span>
+            <span>GROUP NUMBER: 4</span>
+          </div>
 
-        <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed max-w-4xl">
-          An integrated environmental monitoring and decision-support framework designed to bridge water-quality sensor telemetry, preliminary risk screening, heavy-metal laboratory verification workflows, schematic GIS mapping, and aerial surface observation.
-        </p>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-[#263B50] sm:text-3xl">
+            PROJECT: RIVER INTELLIGENCE
+          </h1>
+          <p className="mt-1 text-sm sm:text-base font-bold text-[#0D9488]">
+            IoT- and AI-Based River Water Quality Monitoring with Heavy Metal Risk Prediction and Drone-Assisted Pollution Mapping
+          </p>
 
-        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 border-t border-slate-800 pt-4 text-xs">
-          <div>
-            <div className="text-slate-400">Institution</div>
-            <div className="mt-0.5 font-semibold text-white">
-              Asansol Engineering College
+          <p className="mt-3 text-xs sm:text-sm text-[#52667A] leading-relaxed max-w-4xl">
+            An integrated environmental monitoring and decision-support framework designed to bridge water-quality sensor telemetry, preliminary risk screening, heavy-metal laboratory verification workflows, schematic GIS mapping, and aerial surface observation.
+          </p>
+
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 border-t border-[#70CFFF]/35 pt-4 text-xs">
+            <div className="rounded-xl glass-subcard p-3">
+              <div className="text-[#71869A] font-medium">Institution</div>
+              <div className="mt-0.5 font-bold text-[#263B50]">
+                Asansol Engineering College
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-slate-400">Department</div>
-            <div className="mt-0.5 font-semibold text-white">
-              Computer Science and Engineering
+            <div className="rounded-xl glass-subcard p-3">
+              <div className="text-[#71869A] font-medium">Department</div>
+              <div className="mt-0.5 font-bold text-[#263B50]">
+                Computer Science and Engineering
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-slate-400">Academic Session</div>
-            <div className="mt-0.5 font-mono font-semibold text-white">
-              2026–2027
+            <div className="rounded-xl glass-subcard p-3">
+              <div className="text-[#71869A] font-medium">Academic Session</div>
+              <div className="mt-0.5 font-mono font-bold text-[#263B50]">
+                2026–2027
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-slate-400">Research Group</div>
-            <div className="mt-0.5 font-mono font-semibold text-[#20D6D0]">
-              Group Number 4 (First-Year CSE)
+            <div className="rounded-xl glass-subcard p-3">
+              <div className="text-[#71869A] font-medium">Research Group</div>
+              <div className="mt-0.5 font-mono font-bold text-[#0D9488]">
+                Group Number 4 (First-Year CSE)
+              </div>
             </div>
           </div>
         </div>
@@ -242,16 +260,16 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
       <div className="space-y-4">
         <div className="flex flex-wrap items-end justify-between gap-2">
           <div>
-            <div className="text-xs font-mono text-[#20D6D0]">
+            <div className="text-xs font-mono font-bold text-[#0D9488]">
               PROJECT OVERVIEW & INTEGRATED ARCHITECTURE
             </div>
-            <h2 className="mt-1 text-lg sm:text-xl font-bold text-white">
+            <h2 className="mt-1 text-lg sm:text-xl font-extrabold text-[#263B50]">
               Core Domains of the RIVER INTELLIGENCE Framework
             </h2>
           </div>
           <button
             onClick={() => onNavigate('system-architecture')}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#20D6D0] hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0D9488] hover:text-[#0284C7] hover:underline cursor-pointer"
           >
             <span>Inspect Full Dual-Track System Architecture</span>
             <ArrowRight className="h-3.5 w-3.5" />
@@ -264,32 +282,32 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
             return (
               <div
                 key={pillar.code}
-                className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 flex flex-col justify-between hover:border-[#20D6D0]/40 transition-colors"
+                className="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-mono font-bold text-[#20D6D0]">
+                    <span className="text-xs font-mono font-bold text-[#0D9488]">
                       {pillar.code}
                     </span>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#20D6D0]/30 bg-[#061421] text-[#20D6D0]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#20CFC6]/45 bg-[#C9F5F5]/65 text-[#0D9488] shadow-xs">
                       <Icon className="h-4 w-4" />
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">
+                    <h3 className="text-base sm:text-lg font-bold text-[#263B50]">
                       {pillar.title}
                     </h3>
-                    <div className="text-xs font-mono text-slate-400">
+                    <div className="text-xs font-mono font-semibold text-[#0284C7]">
                       {pillar.subtitle}
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-[#52667A] leading-relaxed">
                     {pillar.description}
                   </p>
 
-                  <div className="rounded-lg border border-slate-800 bg-[#061421] p-3.5 space-y-1.5 text-xs text-slate-300">
+                  <div className="rounded-xl glass-subcard p-3.5 space-y-1.5 text-xs text-[#263B50]">
                     {pillar.highlights.map((item, idx) => (
                       <div key={idx} className="leading-relaxed">
                         • {item}
@@ -298,10 +316,10 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-end">
+                <div className="mt-4 pt-3 border-t border-[#70CFFF]/30 flex items-center justify-end">
                   <button
                     onClick={() => onNavigate(pillar.targetTab)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#20D6D0] hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0D9488] hover:text-[#0284C7] hover:underline cursor-pointer"
                   >
                     <span>{pillar.actionLabel}</span>
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -315,21 +333,21 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
 
       {/* Vision & Core Objectives + Research Gap & Scientific Limitations */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 sm:p-6 space-y-4">
+        <div className="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
           <div>
-            <div className="text-xs font-mono text-[#20D6D0]">
+            <div className="text-xs font-mono font-bold text-[#0D9488]">
               01 · VISION & CORE OBJECTIVES
             </div>
-            <h3 className="mt-1 text-lg font-bold text-white">
+            <h3 className="mt-1 text-lg font-bold text-[#263B50]">
               Project Vision & Engineering Objectives
             </h3>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Conventional river monitoring relies on infrequent manual grab sampling, creating blind spots between upstream baselines and midstream industrial or urban discharge zones. <strong>RIVER INTELLIGENCE</strong> demonstrates a unified environmental intelligence framework that combines continuous physico-chemical telemetry, preliminary risk screening, spatial GIS mapping, and aerial surface inspection.
+          <p className="text-xs text-[#52667A] leading-relaxed">
+            Conventional river monitoring relies on infrequent manual grab sampling, creating blind spots between upstream baselines and midstream industrial or urban discharge zones. <strong className="text-[#263B50]">RIVER INTELLIGENCE</strong> demonstrates a unified environmental intelligence framework that combines continuous physico-chemical telemetry, preliminary risk screening, spatial GIS mapping, and aerial surface inspection.
           </p>
 
-          <div className="rounded-lg border border-slate-800 bg-[#061421] p-4 space-y-2.5 text-xs text-slate-200">
+          <div className="rounded-xl glass-subcard p-4 space-y-2.5 text-xs text-[#263B50]">
             <div>
               • <strong>Multi-Point Corridor Comparison:</strong> Monitor Upstream Reference (Station A), Midstream Influx (Station B), and Downstream Recovery (Station C) across pH, Temperature, Turbidity, Dissolved Oxygen, and Electrical Conductivity.
             </div>
@@ -342,22 +360,22 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 sm:p-6 space-y-4">
+        <div className="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
           <div>
-            <div className="text-xs font-mono text-[#F4B942]">
+            <div className="text-xs font-mono font-bold text-amber-600">
               02 · RESEARCH GAP & SCIENTIFIC LIMITATIONS
             </div>
-            <h3 className="mt-1 text-lg font-bold text-white">
+            <h3 className="mt-1 text-lg font-bold text-[#263B50]">
               Research Gap & Honest Prototype Boundaries
             </h3>
           </div>
 
-          <div className="space-y-3 text-xs text-slate-300 leading-relaxed">
+          <div className="space-y-3 text-xs text-[#52667A] leading-relaxed">
             <p>
-              <strong className="text-white">Identified Research Gap:</strong> Low-cost IoT stations measure bulk physical and chemical parameters rapidly, whereas quantitative heavy metal analysis (Pb, Hg, As, Cd) requires specialized, time-intensive laboratory spectroscopy. Bridging this gap requires combining continuous sensor anomaly screening with targeted laboratory verification.
+              <strong className="text-[#263B50]">Identified Research Gap:</strong> Low-cost IoT stations measure bulk physical and chemical parameters rapidly, whereas quantitative heavy metal analysis (Pb, Hg, As, Cd) requires specialized, time-intensive laboratory spectroscopy. Bridging this gap requires combining continuous sensor anomaly screening with targeted laboratory verification.
             </p>
-            <div className="rounded-lg border border-[#F4B942]/30 bg-[#061421] p-4 space-y-2">
-              <div className="font-semibold text-[#F4B942]">
+            <div className="rounded-xl border border-amber-300/80 bg-amber-50/75 p-4 space-y-2 text-[#263B50]">
+              <div className="font-bold text-amber-800">
                 Mandatory Scientific & Prototype Limitations:
               </div>
               <div>
@@ -375,17 +393,17 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
       </div>
 
       {/* Technology and Methodology Section */}
-      <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 sm:p-6 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+      <div className="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#70CFFF]/30 pb-3">
           <div>
-            <div className="text-xs font-mono text-[#20D6D0]">
+            <div className="text-xs font-mono font-bold text-[#0D9488]">
               03 · TECHNOLOGY AND METHODOLOGY
             </div>
-            <h2 className="mt-1 text-lg font-bold text-white">
+            <h2 className="mt-1 text-lg font-bold text-[#263B50]">
               Analytical Methodology & Framework Workflow
             </h2>
           </div>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono font-semibold text-[#71869A]">
             SIMULATED TELEMETRY · RULE-BASED RISK · SCHEMATIC GIS
           </span>
         </div>
@@ -394,16 +412,16 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
           {METHODOLOGY_STAGES.map((stage) => (
             <div
               key={stage.step}
-              className="rounded-xl border border-slate-800 bg-[#061421] p-4 flex flex-col justify-between"
+              className="rounded-xl glass-subcard p-4 flex flex-col justify-between"
             >
               <div>
-                <div className="text-xs font-mono font-bold text-[#20D6D0]">
+                <div className="text-xs font-mono font-bold text-[#0D9488]">
                   METHODOLOGY STEP {stage.step}
                 </div>
-                <h3 className="mt-1.5 text-sm font-bold text-white">
+                <h3 className="mt-1.5 text-sm font-bold text-[#263B50]">
                   {stage.title}
                 </h3>
-                <p className="mt-2 text-xs text-slate-300 leading-relaxed">
+                <p className="mt-2 text-xs text-[#52667A] leading-relaxed">
                   {stage.detail}
                 </p>
               </div>
@@ -413,17 +431,17 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
       </div>
 
       {/* Team Members Directory (Group 4: 139, 140, 141, 142, 144) */}
-      <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 sm:p-6">
+      <div className="glass-card rounded-2xl p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
-            <div className="text-xs font-mono text-[#20D6D0]">
+            <div className="text-xs font-mono font-bold text-[#0D9488]">
               04 · PROJECT RESEARCH & ENGINEERING TEAM
             </div>
-            <h2 className="mt-1 text-lg font-bold text-white">
+            <h2 className="mt-1 text-lg font-bold text-[#263B50]">
               Group 4 Team Members — Asansol Engineering College (CSE)
             </h2>
           </div>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono font-semibold text-[#71869A]">
             5 MEMBERS · ACADEMIC SESSION 2026–2027
           </span>
         </div>
@@ -432,17 +450,17 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
           {TEAM_MEMBERS.map((member) => (
             <div
               key={member.roll}
-              className="rounded-xl border border-slate-800 bg-[#061421] p-4 flex items-start gap-3.5"
+              className="rounded-xl glass-subcard p-4 flex items-start gap-3.5 hover:border-[#20CFC6]/60 transition-colors"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#20D6D0]/40 bg-[#0B2030] font-mono text-sm font-bold text-[#20D6D0]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#20CFC6]/50 bg-gradient-to-br from-[#C9F5F5] to-[#EDF8FF] font-mono text-sm font-extrabold text-[#0D9488] shadow-xs">
                 {member.roll}
               </div>
               <div>
-                <div className="text-xs font-mono text-slate-400">
+                <div className="text-xs font-mono font-semibold text-[#71869A]">
                   ROLL NO. {member.roll}
                 </div>
-                <div className="text-base font-bold text-white">{member.name}</div>
-                <div className="mt-1 text-xs text-slate-400">{member.role}</div>
+                <div className="text-base font-bold text-[#263B50]">{member.name}</div>
+                <div className="mt-1 text-xs text-[#52667A]">{member.role}</div>
               </div>
             </div>
           ))}
@@ -450,19 +468,19 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
       </div>
 
       {/* Future Scope Roadmap */}
-      <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 sm:p-6">
+      <div className="glass-card rounded-2xl p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
-            <div className="text-xs font-mono text-[#20D6D0]">
+            <div className="text-xs font-mono font-bold text-[#0D9488]">
               05 · FUTURE SCOPE & FIELD DEPLOYMENT ROADMAP
             </div>
-            <h2 className="mt-1 text-lg font-bold text-white">
+            <h2 className="mt-1 text-lg font-bold text-[#263B50]">
               Proposed Extensions for Real-World River Basin Deployment
             </h2>
           </div>
           <button
             onClick={() => onNavigate('overview')}
-            className="min-h-[40px] rounded-lg bg-[#20D6D0] px-4 py-2 text-xs font-semibold text-[#061421] hover:bg-[#00AFA7] hover:text-white transition-colors cursor-pointer"
+            className="min-h-[40px] rounded-xl bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] px-4 py-2 text-xs font-bold text-white shadow-sm hover:opacity-95 transition-all cursor-pointer"
           >
             Return to Command Centre →
           </button>
@@ -472,13 +490,13 @@ export const AboutProjectView: React.FC<AboutProjectViewProps> = ({
           {FUTURE_SCOPE_ITEMS.map((item, idx) => (
             <div
               key={item.title}
-              className="rounded-xl border border-slate-800 bg-[#061421] p-4"
+              className="rounded-xl glass-subcard p-4"
             >
-              <div className="text-xs font-mono font-bold text-[#20D6D0]">
+              <div className="text-xs font-mono font-bold text-[#0D9488]">
                 PHASE 0{idx + 1}
               </div>
-              <h3 className="mt-1 text-sm font-bold text-white">{item.title}</h3>
-              <p className="mt-1.5 text-xs text-slate-400 leading-relaxed">
+              <h3 className="mt-1 text-sm font-bold text-[#263B50]">{item.title}</h3>
+              <p className="mt-1.5 text-xs text-[#52667A] leading-relaxed">
                 {item.description}
               </p>
             </div>

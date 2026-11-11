@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  ArrowRight,
-  BrainCircuit,
-  CheckCircle2,
-  GitBranch,
-  Layers,
-  Scale,
-  ShieldAlert,
-  Sliders,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import {
   StationData,
   StationId,
@@ -170,38 +161,38 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Mandatory Scientific Honesty Banner */}
-      <div className="rounded-xl border border-[#F4B942]/40 bg-[#0B2030] p-5">
+      <div className="glass-panel rounded-2xl p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="text-xs font-mono font-semibold text-[#F4B942]">
+          <div className="text-xs font-mono font-bold text-[#0D9488]">
             METHODOLOGY DISCLOSURE — RULE-BASED DEMONSTRATION ENGINE
           </div>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono font-semibold text-[#71869A]">
             NO FABRICATED MODEL ACCURACY METRICS
           </span>
         </div>
-        <h1 className="mt-1 text-xl font-bold text-white sm:text-2xl">
-          AI-Inspired Water Quality Risk Assessment & ML Pipeline Framework
+        <h1 className="mt-1 text-xl font-extrabold text-[#263B50] sm:text-2xl">
+          AI-Inspired Water Quality Risk Assessment &amp; ML Pipeline Framework
         </h1>
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1 text-sm text-[#52667A]">
           This module demonstrates the proposed Machine Learning workflow and provides a transparent, rule-based preliminary risk assessment using simulated sensor inputs.
         </p>
-        <div className="mt-3 rounded-lg border border-[#20D6D0]/30 bg-[#061421] px-4 py-2.5 text-xs font-mono text-[#20D6D0]">
-          "Actual machine learning validation requires a suitable labelled dataset and independent testing."
+        <div className="mt-3 glass-subcard rounded-xl px-4 py-2.5 text-xs font-mono font-semibold text-[#0E7490]">
+          &quot;Actual machine learning validation requires a suitable labelled dataset and independent testing.&quot;
         </div>
       </div>
 
       {/* Interactive 6-Stage ML Pipeline Workflow */}
-      <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5">
+      <div className="glass-panel rounded-2xl p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
-            <h2 className="text-base font-bold text-white">
+            <h2 className="text-base font-bold text-[#263B50]">
               Proposed Machine Learning Processing Pipeline
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#71869A]">
               Click any stage in the pipeline to inspect its data processing role in the framework.
             </p>
           </div>
-          <span className="text-xs font-mono text-[#20D6D0]">
+          <span className="text-xs font-mono font-bold text-[#0D9488]">
             Dataset → Preprocessing → Feature Selection → Model Training → Model Evaluation → Prediction
           </span>
         </div>
@@ -213,29 +204,31 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
               <button
                 key={s.step}
                 onClick={() => setActivePipelineStep(index)}
-                className={`text-left rounded-xl border p-3.5 transition-all cursor-pointer ${
+                className={`text-left rounded-2xl border p-3.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'border-[#20D6D0] bg-[#061421]'
-                    : 'border-slate-800 bg-[#061421]/50 hover:border-slate-700'
+                    ? 'border-[#20CFC6] bg-white shadow-[0_10px_25px_-6px_rgba(32,207,198,0.22)] ring-2 ring-[#20CFC6]/25'
+                    : 'border-[#70CFFF]/35 bg-white/60 hover:bg-white/85'
                 }`}
               >
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-[#20D6D0] font-bold">STAGE {s.step}</span>
-                  {index < 5 && <ArrowRight className="h-3.5 w-3.5 text-slate-500 hidden lg:block" />}
+                  <span className="text-[#0D9488] font-bold">STAGE {s.step}</span>
+                  {index < 5 && (
+                    <ArrowRight className="h-3.5 w-3.5 text-[#71869A] hidden lg:block" />
+                  )}
                 </div>
-                <div className="mt-1.5 text-sm font-bold text-white">{s.title}</div>
-                <div className="text-xs text-slate-400">{s.subtitle}</div>
+                <div className="mt-1.5 text-sm font-bold text-[#263B50]">{s.title}</div>
+                <div className="text-xs text-[#71869A]">{s.subtitle}</div>
               </button>
             );
           })}
         </div>
 
-        <div className="mt-4 rounded-lg border border-slate-800 bg-[#061421] p-4">
-          <div className="text-xs font-mono text-[#20D6D0]">
+        <div className="mt-4 glass-subcard rounded-xl p-4">
+          <div className="text-xs font-mono font-bold text-[#0D9488]">
             STAGE {ML_PIPELINE_STEPS[activePipelineStep].step}:{' '}
             {ML_PIPELINE_STEPS[activePipelineStep].title.toUpperCase()}
           </div>
-          <p className="mt-1 text-sm text-slate-200">
+          <p className="mt-1 text-sm text-[#263B50]">
             {ML_PIPELINE_STEPS[activePipelineStep].description}
           </p>
         </div>
@@ -244,25 +237,25 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
       {/* Interactive Preliminary Risk Assessment Engine (Gauge + Station Breakdown) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Left: Risk Gauge & Station Selection */}
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 flex flex-col justify-between">
+        <div className="glass-panel rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-mono text-[#20D6D0]">
+              <span className="text-xs font-mono font-bold text-[#0D9488]">
                 PRELIMINARY RISK INDICATOR GAUGE
               </span>
-              <span className="text-xs font-mono text-slate-400">RULE-BASED DEMO</span>
+              <span className="text-xs font-mono text-[#71869A]">RULE-BASED DEMO</span>
             </div>
 
             {/* Station Switcher */}
-            <div className="mt-3 flex items-center gap-1.5 rounded-lg border border-slate-800 bg-[#061421] p-1">
+            <div className="mt-3 flex items-center gap-1.5 rounded-xl border border-[#70CFFF]/40 bg-[#EDF8FF]/90 p-1">
               {(['A', 'B', 'C'] as StationId[]).map((id) => (
                 <button
                   key={id}
                   onClick={() => handleSelectStationForRisk(id)}
-                  className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+                  className={`flex-1 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
                     selectedStation === id
-                      ? 'bg-[#20D6D0] text-[#061421]'
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-[#20CFC6] text-white shadow-xs'
+                      : 'text-[#52667A] hover:text-[#263B50]'
                   }`}
                 >
                   Station {id}
@@ -277,7 +270,7 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                 <path
                   d="M 20 110 A 90 90 0 0 1 200 110"
                   fill="none"
-                  stroke="#1E293B"
+                  stroke="var(--chart-grid)"
                   strokeWidth="16"
                   strokeLinecap="round"
                 />
@@ -285,27 +278,24 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                 <path
                   d="M 20 110 A 90 90 0 0 1 75 28"
                   fill="none"
-                  stroke="#20D6D0"
+                  stroke="#20CFC6"
                   strokeWidth="16"
                   strokeLinecap="round"
-                  opacity="0.75"
                 />
                 {/* Medium Risk Segment */}
                 <path
                   d="M 80 26 A 90 90 0 0 1 140 26"
                   fill="none"
-                  stroke="#F4B942"
+                  stroke="#F59E0B"
                   strokeWidth="16"
-                  opacity="0.75"
                 />
                 {/* High Risk Segment */}
                 <path
                   d="M 145 28 A 90 90 0 0 1 200 110"
                   fill="none"
-                  stroke="#FF7068"
+                  stroke="#F43F5E"
                   strokeWidth="16"
                   strokeLinecap="round"
-                  opacity="0.85"
                 />
 
                 {/* Score Readout inside Gauge */}
@@ -313,9 +303,9 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                   x="110"
                   y="85"
                   textAnchor="middle"
-                  fill="#FFFFFF"
+                  fill="var(--text-primary)"
                   fontSize="28"
-                  fontWeight="bold"
+                  fontWeight="800"
                   fontFamily="monospace"
                 >
                   {activeRisk.score}/100
@@ -326,13 +316,13 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                   textAnchor="middle"
                   fill={
                     activeRisk.level === 'High'
-                      ? '#FF7068'
+                      ? '#FB7185'
                       : activeRisk.level === 'Medium'
-                      ? '#F4B942'
-                      : '#20D6D0'
+                      ? '#F59E0B'
+                      : '#20CFC6'
                   }
                   fontSize="13"
-                  fontWeight="bold"
+                  fontWeight="800"
                   fontFamily="monospace"
                 >
                   {activeRisk.level.toUpperCase()} RISK TIER
@@ -340,10 +330,10 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
               </svg>
 
               <div className="mt-2 text-center">
-                <div className="text-sm font-bold text-white">
+                <div className="text-sm font-bold text-[#263B50]">
                   {stations[selectedStation].name}
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-[#71869A]">
                   {sandboxMode
                     ? 'Evaluating custom What-If sandbox inputs'
                     : 'Evaluating current simulated station readings'}
@@ -353,8 +343,8 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
           </div>
 
           {/* Cross-Station Risk Comparison Table */}
-          <div className="mt-6 border-t border-slate-800 pt-4">
-            <div className="text-xs font-semibold text-slate-300 mb-2">
+          <div className="mt-6 border-t border-[#70CFFF]/30 pt-4">
+            <div className="text-xs font-bold text-[#263B50] mb-2">
               Cross-Station Risk Comparison:
             </div>
             <div className="space-y-1.5">
@@ -363,16 +353,16 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                 return (
                   <div
                     key={id}
-                    className="flex items-center justify-between text-xs font-mono px-2.5 py-1.5 rounded bg-[#061421]"
+                    className="glass-subcard flex items-center justify-between text-xs font-mono px-3 py-2 rounded-xl"
                   >
-                    <span className="text-slate-300">Station {id}</span>
+                    <span className="font-semibold text-[#263B50]">Station {id}</span>
                     <span
                       className={
                         r.level === 'High'
-                          ? 'text-[#FF7068] font-bold'
+                          ? 'text-rose-600 font-bold'
                           : r.level === 'Medium'
-                          ? 'text-[#F4B942] font-bold'
-                          : 'text-[#20D6D0] font-bold'
+                          ? 'text-amber-600 font-bold'
+                          : 'text-[#0D9488] font-bold'
                       }
                     >
                       {r.level} ({r.score}/100)
@@ -385,13 +375,13 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
         </div>
 
         {/* Right 2 Columns: Input Parameter Summary, Rule Explanation & What-If Sandbox */}
-        <div className="lg:col-span-2 rounded-xl border border-slate-800 bg-[#0B2030] p-5 space-y-5">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div className="lg:col-span-2 glass-panel rounded-2xl p-5 sm:p-6 space-y-5">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#70CFFF]/30 pb-3">
             <div>
-              <h3 className="text-base font-bold text-white">
-                Input Parameter Summary & Transparent Classification Rules
+              <h3 className="text-base font-bold text-[#263B50]">
+                Input Parameter Summary &amp; Transparent Classification Rules
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#71869A]">
                 Inspect how each of the 5 simulated parameters contributes to the preliminary risk classification.
               </p>
             </div>
@@ -400,20 +390,20 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                 setSandboxReadings({ ...stations[selectedStation].readings });
                 setSandboxMode(!sandboxMode);
               }}
-              className="rounded-lg border border-[#20D6D0]/40 bg-[#061421] px-3 py-1.5 text-xs font-semibold text-[#20D6D0] hover:bg-[#20D6D0]/10 cursor-pointer"
+              className="rounded-xl border border-[#20CFC6]/50 bg-white/85 px-3.5 py-2 text-xs font-bold text-[#0D9488] hover:bg-[#EDF8FF] cursor-pointer"
             >
               {sandboxMode ? 'Exit What-If Sandbox' : 'Test Custom What-If Inputs'}
             </button>
           </div>
 
           {sandboxMode && (
-            <div className="rounded-lg border border-[#20D6D0]/30 bg-[#061421] p-4">
-              <div className="text-xs font-mono text-[#20D6D0] mb-3">
+            <div className="glass-subcard rounded-xl p-4">
+              <div className="text-xs font-mono font-bold text-[#0D9488] mb-3">
                 WHAT-IF SANDBOX: ADJUST INPUTS TO TEST RULE-BASED CLASSIFICATION
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
                 <div>
-                  <label className="text-xs text-slate-400">pH</label>
+                  <label className="text-xs font-semibold text-[#263B50]">pH</label>
                   <input
                     type="number"
                     step="0.1"
@@ -421,11 +411,11 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                     onChange={(e) =>
                       setSandboxReadings({ ...sandboxReadings, ph: Number(e.target.value) })
                     }
-                    className="mt-1 w-full rounded border border-slate-700 bg-[#0B2030] px-2 py-1 text-xs font-mono text-white"
+                    className="mt-1 w-full rounded-lg border border-[#70CFFF]/50 bg-white px-2.5 py-1.5 text-xs font-mono text-[#263B50]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-slate-400">Temp (°C)</label>
+                  <label className="text-xs font-semibold text-[#263B50]">Temp (°C)</label>
                   <input
                     type="number"
                     step="0.5"
@@ -436,11 +426,11 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                         temperature: Number(e.target.value),
                       })
                     }
-                    className="mt-1 w-full rounded border border-slate-700 bg-[#0B2030] px-2 py-1 text-xs font-mono text-white"
+                    className="mt-1 w-full rounded-lg border border-[#70CFFF]/50 bg-white px-2.5 py-1.5 text-xs font-mono text-[#263B50]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-slate-400">Turbidity (NTU)</label>
+                  <label className="text-xs font-semibold text-[#263B50]">Turbidity (NTU)</label>
                   <input
                     type="number"
                     step="1"
@@ -451,11 +441,11 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                         turbidity: Number(e.target.value),
                       })
                     }
-                    className="mt-1 w-full rounded border border-slate-700 bg-[#0B2030] px-2 py-1 text-xs font-mono text-white"
+                    className="mt-1 w-full rounded-lg border border-[#70CFFF]/50 bg-white px-2.5 py-1.5 text-xs font-mono text-[#263B50]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-slate-400">DO (mg/L)</label>
+                  <label className="text-xs font-semibold text-[#263B50]">DO (mg/L)</label>
                   <input
                     type="number"
                     step="0.1"
@@ -466,11 +456,11 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                         dissolvedOxygen: Number(e.target.value),
                       })
                     }
-                    className="mt-1 w-full rounded border border-slate-700 bg-[#0B2030] px-2 py-1 text-xs font-mono text-white"
+                    className="mt-1 w-full rounded-lg border border-[#70CFFF]/50 bg-white px-2.5 py-1.5 text-xs font-mono text-[#263B50]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-slate-400">EC (µS/cm)</label>
+                  <label className="text-xs font-semibold text-[#263B50]">EC (µS/cm)</label>
                   <input
                     type="number"
                     step="10"
@@ -481,7 +471,7 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
                         conductivity: Number(e.target.value),
                       })
                     }
-                    className="mt-1 w-full rounded border border-slate-700 bg-[#0B2030] px-2 py-1 text-xs font-mono text-white"
+                    className="mt-1 w-full rounded-lg border border-[#70CFFF]/50 bg-white px-2.5 py-1.5 text-xs font-mono text-[#263B50]"
                   />
                 </div>
               </div>
@@ -492,34 +482,34 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-800 text-slate-400 font-mono">
-                  <th className="py-2 pr-4">PARAMETER</th>
-                  <th className="py-2 px-4">SIMULATED INPUT</th>
-                  <th className="py-2 px-4">RULE STATUS</th>
-                  <th className="py-2 pl-4">CLASSIFICATION RATIONALE</th>
+                <tr className="border-b border-[#70CFFF]/35 text-[#71869A] font-mono">
+                  <th className="py-2.5 pr-4">PARAMETER</th>
+                  <th className="py-2.5 px-4">SIMULATED INPUT</th>
+                  <th className="py-2.5 px-4">RULE STATUS</th>
+                  <th className="py-2.5 pl-4">CLASSIFICATION RATIONALE</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/70">
+              <tbody className="divide-y divide-[#70CFFF]/25">
                 {activeRisk.parameterFlags.map((pf) => (
                   <tr key={pf.parameter}>
-                    <td className="py-2.5 pr-4 font-semibold text-white">{pf.parameter}</td>
-                    <td className="py-2.5 px-4 font-mono tabular-nums text-[#20D6D0]">
+                    <td className="py-3 pr-4 font-bold text-[#263B50]">{pf.parameter}</td>
+                    <td className="py-3 px-4 font-mono font-bold tabular-nums text-[#0D9488]">
                       {pf.value}
                     </td>
-                    <td className="py-2.5 px-4 font-mono font-semibold">
+                    <td className="py-3 px-4 font-mono font-bold">
                       <span
                         className={
                           pf.status === 'Critical'
-                            ? 'text-[#FF7068]'
+                            ? 'text-rose-600'
                             : pf.status === 'Elevated'
-                            ? 'text-[#F4B942]'
-                            : 'text-emerald-400'
+                            ? 'text-amber-600'
+                            : 'text-emerald-600'
                         }
                       >
                         {pf.status.toUpperCase()}
                       </span>
                     </td>
-                    <td className="py-2.5 pl-4 text-slate-300">{pf.explanation}</td>
+                    <td className="py-3 pl-4 text-[#52667A]">{pf.explanation}</td>
                   </tr>
                 ))}
               </tbody>
@@ -527,13 +517,13 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
           </div>
 
           {/* Overall Reason Summary */}
-          <div className="rounded-lg border border-slate-800 bg-[#061421] p-4 space-y-2">
-            <div className="text-xs font-mono font-semibold text-white">
+          <div className="glass-subcard rounded-xl p-4 space-y-2">
+            <div className="text-xs font-mono font-bold text-[#263B50]">
               PRIMARY REASONS FOR {activeRisk.level.toUpperCase()} RISK CLASSIFICATION (STATION{' '}
               {selectedStation}):
             </div>
             {activeRisk.reasons.map((r, i) => (
-              <div key={i} className="text-xs text-slate-300">
+              <div key={i} className="text-xs text-[#52667A]">
                 • {r}
               </div>
             ))}
@@ -542,25 +532,25 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
       </div>
 
       {/* Three Candidate ML Algorithms Visual Explanation */}
-      <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 space-y-4">
+      <div className="glass-panel rounded-2xl p-5 sm:p-6 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="text-base font-bold text-white">
+            <h2 className="text-base font-bold text-[#263B50]">
               Candidate Machine Learning Classifiers (Architectural Comparison)
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#71869A]">
               Visual explanation of the three supervised learning algorithms proposed in the RIVER INTELLIGENCE framework.
             </p>
           </div>
-          <div className="flex items-center gap-1 rounded-lg bg-[#061421] p-1 border border-slate-800">
+          <div className="flex items-center gap-1 rounded-xl bg-[#EDF8FF]/90 p-1 border border-[#70CFFF]/40">
             {CANDIDATE_ALGORITHMS.map((alg) => (
               <button
                 key={alg.id}
                 onClick={() => setSelectedAlgo(alg.id)}
-                className={`rounded-md px-3 py-1 text-xs font-semibold transition-colors cursor-pointer ${
+                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   selectedAlgo === alg.id
-                    ? 'bg-[#20D6D0] text-[#061421]'
-                    : 'text-slate-300 hover:text-white'
+                    ? 'bg-[#20CFC6] text-white shadow-xs'
+                    : 'text-[#52667A] hover:text-[#263B50]'
                 }`}
               >
                 {alg.name.split(' ')[0]} {alg.name.split(' ')[1]}
@@ -576,29 +566,29 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
               <div
                 key={alg.id}
                 onClick={() => setSelectedAlgo(alg.id)}
-                className={`rounded-xl border p-4 transition-all cursor-pointer ${
+                className={`glass-card rounded-2xl p-5 cursor-pointer ${
                   isSelected
-                    ? 'border-[#20D6D0] bg-[#061421]'
-                    : 'border-slate-800 bg-[#061421]/60 hover:border-slate-700'
+                    ? 'border-[#20CFC6] ring-2 ring-[#20CFC6]/25'
+                    : ''
                 }`}
               >
-                <div className="text-xs font-mono text-[#20D6D0]">{alg.role}</div>
-                <h3 className="mt-1 text-base font-bold text-white">{alg.name}</h3>
-                <p className="mt-2 text-xs text-slate-300 leading-relaxed">{alg.howItWorks}</p>
+                <div className="text-xs font-mono font-bold text-[#0D9488]">{alg.role}</div>
+                <h3 className="mt-1 text-base font-bold text-[#263B50]">{alg.name}</h3>
+                <p className="mt-2 text-xs text-[#52667A] leading-relaxed">{alg.howItWorks}</p>
 
-                <div className="mt-3 rounded-lg border border-slate-800 bg-[#0B2030] p-3 font-mono text-[11px] text-slate-200 space-y-1">
+                <div className="mt-3 glass-subcard rounded-xl p-3 font-mono text-[11px] text-[#263B50] space-y-1">
                   {alg.visualDiagram.map((line, idx) => (
                     <div key={idx}>{line}</div>
                   ))}
                 </div>
 
                 <div className="mt-3 space-y-1 text-xs">
-                  <div className="text-slate-300">
-                    <span className="font-semibold text-emerald-400">Advantage:</span>{' '}
+                  <div className="text-[#52667A]">
+                    <span className="font-bold text-emerald-700">Advantage:</span>{' '}
                     {alg.strengths}
                   </div>
-                  <div className="text-slate-400">
-                    <span className="font-semibold text-[#F4B942]">Constraint:</span>{' '}
+                  <div className="text-[#52667A]">
+                    <span className="font-bold text-amber-700">Constraint:</span>{' '}
                     {alg.limitations}
                   </div>
                 </div>
@@ -608,18 +598,18 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
         </div>
       </div>
 
-      {/* Model Evaluation Metrics Methodology (No Fabricated Accuracy Numbers) */}
-      <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5">
+      {/* Model Evaluation Metrics Methodology */}
+      <div className="glass-panel rounded-2xl p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
-            <h2 className="text-base font-bold text-white">
-              Model Evaluation Metrics Methodology (Accuracy, Precision, Recall & F1-Score)
+            <h2 className="text-base font-bold text-[#263B50]">
+              Model Evaluation Metrics Methodology (Accuracy, Precision, Recall &amp; F1-Score)
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#71869A]">
               How candidate classifiers will be benchmarked once paired field and laboratory datasets are compiled.
             </p>
           </div>
-          <span className="text-xs font-mono text-[#F4B942]">
+          <span className="text-xs font-mono font-bold text-amber-700">
             STATUS: AWAITING LABELLED DATASET FOR EMPIRICAL SCORING
           </span>
         </div>
@@ -628,16 +618,16 @@ export const AiRiskAssessmentView: React.FC<AiRiskAssessmentViewProps> = ({
           {EVALUATION_METRICS.map((m) => (
             <div
               key={m.metric}
-              className="rounded-xl border border-slate-800 bg-[#061421] p-4 flex flex-col justify-between"
+              className="glass-card rounded-2xl p-4 flex flex-col justify-between"
             >
               <div>
-                <div className="text-sm font-bold text-white">{m.metric}</div>
-                <div className="mt-1.5 rounded bg-[#0B2030] px-2.5 py-1.5 font-mono text-xs text-[#20D6D0]">
+                <div className="text-sm font-bold text-[#263B50]">{m.metric}</div>
+                <div className="mt-1.5 rounded-lg bg-[#EDF8FF] border border-[#70CFFF]/40 px-2.5 py-1.5 font-mono text-xs font-bold text-[#0D9488]">
                   {m.formula}
                 </div>
-                <p className="mt-2.5 text-xs text-slate-300 leading-relaxed">{m.meaning}</p>
+                <p className="mt-2.5 text-xs text-[#52667A] leading-relaxed">{m.meaning}</p>
               </div>
-              <div className="mt-3 pt-2 border-t border-slate-800/80 text-[11px] font-mono text-slate-500">
+              <div className="mt-3 pt-2 border-t border-[#70CFFF]/25 text-[11px] font-mono text-[#71869A]">
                 Empirical Score: Pending Labelled Test Set
               </div>
             </div>

@@ -1,10 +1,5 @@
 import React, { useState, useRef } from 'react';
 import {
-  Camera,
-  CheckCircle2,
-  Crosshair,
-  FileWarning,
-  Plus,
   RotateCcw,
   Scan,
   Trash2,
@@ -83,7 +78,6 @@ const SAMPLE_FRAMES = [
 export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
   droneObservations,
   onAddDroneObservation,
-  selectedStation,
   onSelectStation,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -101,6 +95,7 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
   );
   const [newPinLabel, setNewPinLabel] = useState<string>('Manual Surface Anomaly Tag');
   const [demoExecuted, setDemoExecuted] = useState<boolean>(true);
+  const [isScanning, setIsScanning] = useState<boolean>(false);
   const [observationNotes, setObservationNotes] = useState<string>(
     'Manual & simulated aerial visual inspection completed. Visible surface anomaly requires on-ground field verification and laboratory water sampling.'
   );
@@ -175,7 +170,11 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
   };
 
   const handleRunAnalysisDemo = () => {
+    setIsScanning(true);
     setDemoExecuted(true);
+    window.setTimeout(() => {
+      setIsScanning(false);
+    }, 1800);
     if (pins.length === 0) {
       setPins([
         {
@@ -225,28 +224,28 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Scientific Honesty & Prototype Scope Banner */}
-      <div className="rounded-xl border border-[#F4B942]/40 bg-[#0B2030] p-5">
+      <div className="glass-panel rounded-2xl p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-          <span className="text-[#F4B942] font-bold">
+          <span className="text-amber-700 font-bold">
             PROTOTYPE DISCLOSURE — NO ACTUAL DRONE SURVEY CONDUCTED
           </span>
-          <span className="text-[#20D6D0]">
-            LOCAL VISUAL-ANALYSIS SIMULATION & MANUAL ANNOTATION WORKFLOW
+          <span className="text-[#0D9488] font-bold">
+            LOCAL VISUAL-ANALYSIS SIMULATION &amp; MANUAL ANNOTATION WORKFLOW
           </span>
         </div>
-        <h1 className="mt-1 text-xl font-bold text-white sm:text-2xl">
-          Drone-Assisted Visible Pollution Analysis & Geo-Tagging
+        <h1 className="mt-1 text-xl font-extrabold text-[#263B50] sm:text-2xl">
+          Drone-Assisted Visible Pollution Analysis &amp; Geo-Tagging
         </h1>
-        <p className="mt-1 text-sm text-slate-300 leading-relaxed">
+        <p className="mt-1 text-sm text-[#52667A] leading-relaxed">
           Upload a local aerial image or inspect the demonstration river frames, select visible surface pollution categories, click on the image to place manual hotspot annotations, and associate observations with Station A, B, or C.
         </p>
-        <div className="mt-3 rounded-lg border border-[#FF7068]/30 bg-[#061421] px-4 py-2.5 text-xs text-slate-200">
-          <strong className="text-[#FF7068]">Scientific Limitation:</strong> Aerial imagery can only identify visible surface features (solid waste, surface plumes, outfall pipes, water discoloration) and <strong>cannot independently identify dissolved heavy metals</strong>. All aerial observations require on-ground field verification.
+        <div className="mt-3 rounded-xl border border-rose-200 bg-rose-50/75 px-4 py-2.5 text-xs text-[#263B50]">
+          <strong className="text-rose-600">Scientific Limitation:</strong> Aerial imagery can only identify visible surface features (solid waste, surface plumes, outfall pipes, water discoloration) and <strong>cannot independently identify dissolved heavy metals</strong>. All aerial observations require on-ground field verification.
         </div>
       </div>
 
       {/* Upload & Sample Selection Toolbar */}
-      <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-4">
+      <div className="glass-card rounded-2xl p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <input
@@ -259,7 +258,7 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
             />
             <label
               htmlFor="drone-image-upload"
-              className="inline-flex items-center gap-2 rounded-lg bg-[#20D6D0] px-4 py-2 text-xs font-semibold text-[#061421] hover:bg-[#00AFA7] hover:text-white transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="min-h-[40px] inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] px-4 py-2 text-xs font-bold text-white shadow-xs hover:opacity-95 transition-all cursor-pointer whitespace-nowrap shrink-0"
             >
               <Upload className="h-3.5 w-3.5" />
               <span>Upload Local Drone Image</span>
@@ -267,14 +266,14 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
 
             <button
               onClick={() => handleSelectSampleFrame(0)}
-              className="rounded-lg border border-slate-700 bg-[#061421] px-3 py-2 text-xs font-medium text-slate-200 hover:border-[#20D6D0] cursor-pointer whitespace-nowrap shrink-0"
+              className="min-h-[40px] rounded-xl border border-[#70CFFF]/50 bg-white/85 px-3.5 py-2 text-xs font-semibold text-[#263B50] hover:border-[#20CFC6] cursor-pointer whitespace-nowrap shrink-0"
             >
               Load Sample 1 (Midstream Outfall)
             </button>
 
             <button
               onClick={() => handleSelectSampleFrame(1)}
-              className="rounded-lg border border-slate-700 bg-[#061421] px-3 py-2 text-xs font-medium text-slate-200 hover:border-[#20D6D0] cursor-pointer whitespace-nowrap shrink-0"
+              className="min-h-[40px] rounded-xl border border-[#70CFFF]/50 bg-white/85 px-3.5 py-2 text-xs font-semibold text-[#263B50] hover:border-[#20CFC6] cursor-pointer whitespace-nowrap shrink-0"
             >
               Load Sample 2 (Shoreline Waste)
             </button>
@@ -283,15 +282,15 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handleRunAnalysisDemo}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#20D6D0]/50 bg-[#20D6D0]/15 px-3.5 py-2 text-xs font-semibold text-[#20D6D0] hover:bg-[#20D6D0]/25 cursor-pointer whitespace-nowrap shrink-0"
+              className="min-h-[40px] inline-flex items-center gap-1.5 rounded-xl border border-[#20CFC6] bg-[#C9F5F5]/65 px-3.5 py-2 text-xs font-bold text-[#0E7490] hover:bg-[#C9F5F5] cursor-pointer whitespace-nowrap shrink-0"
             >
               <Scan className="h-3.5 w-3.5" />
-              <span>Analysis Demonstration</span>
+              <span>{isScanning ? 'Scanning Frame...' : 'Analysis Demonstration'}</span>
             </button>
 
             <button
               onClick={handleResetImage}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-[#061421] px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white cursor-pointer whitespace-nowrap shrink-0"
+              className="min-h-[40px] inline-flex items-center gap-1.5 rounded-xl border border-[#70CFFF]/50 bg-white/85 px-3.5 py-2 text-xs font-semibold text-[#52667A] hover:text-[#263B50] cursor-pointer whitespace-nowrap shrink-0"
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Reset Image</span>
@@ -304,10 +303,10 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Left 2 Columns: Interactive Image Preview & Click-to-Annotate Stage */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-4 space-y-3">
+          <div className="glass-panel rounded-2xl p-4 sm:p-5 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-              <div className="font-semibold text-white">{imageTitle}</div>
-              <div className="font-mono text-[#20D6D0]">
+              <div className="font-bold text-[#263B50]">{imageTitle}</div>
+              <div className="font-mono font-bold text-[#0D9488]">
                 CLICK ANYWHERE ON IMAGE TO PLACE MANUAL HOTSPOT PIN ({pins.length} PINS)
               </div>
             </div>
@@ -315,7 +314,7 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
             {/* Interactive Image Container */}
             <div
               onClick={handleImageCanvasClick}
-              className="relative overflow-hidden rounded-xl border border-[#20D6D0]/30 bg-[#061421] cursor-crosshair select-none aspect-video"
+              className="relative overflow-hidden rounded-2xl border-2 border-[#20CFC6]/45 bg-[#EDF8FF] cursor-crosshair select-none aspect-video shadow-inner"
             >
               <img
                 src={imageUrl}
@@ -324,12 +323,19 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
                 className="h-full w-full object-cover"
               />
 
-              {/* HUD Corner Crosshairs */}
-              <div className="pointer-events-none absolute inset-0 border border-[#20D6D0]/20">
-                <div className="absolute top-3 left-3 rounded bg-[#061421]/85 px-2.5 py-1 font-mono text-[11px] text-[#20D6D0]">
+              {/* Animated Optical Scanning Line Overlay */}
+              {isScanning && (
+                <div
+                  className="pointer-events-none absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#20CFC6] to-transparent shadow-[0_0_20px_4px_rgba(32,207,198,0.85)] animate-drone-scan"
+                />
+              )}
+
+              {/* Frosted Glass HUD Badges */}
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute top-3 left-3 rounded-lg border border-white/80 bg-white/85 backdrop-blur-md px-3 py-1 font-mono text-[11px] font-bold text-[#0D9488] shadow-xs">
                   STATION LINK: STN-{associatedStation} · MODE: LOCAL VISUAL DEMO
                 </div>
-                <div className="absolute bottom-3 right-3 rounded bg-[#061421]/85 px-2.5 py-1 font-mono text-[11px] text-[#F4B942]">
+                <div className="absolute bottom-3 right-3 rounded-lg border border-amber-300 bg-white/90 backdrop-blur-md px-3 py-1 font-mono text-[11px] font-bold text-amber-700 shadow-xs">
                   FIELD VERIFICATION REQUIRED
                 </div>
               </div>
@@ -342,10 +348,10 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
                   onClick={(e) => e.stopPropagation()}
                   className="absolute -translate-x-1/2 -translate-y-1/2 group"
                 >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#FF7068] bg-[#061421]/90 font-mono text-xs font-bold text-[#FF7068] shadow-md">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-rose-600 bg-white/95 font-mono text-xs font-extrabold text-rose-600 shadow-md">
                     {idx + 1}
                   </div>
-                  <div className="mt-1 whitespace-nowrap rounded border border-[#FF7068]/60 bg-[#061421]/95 px-2 py-0.5 text-[11px] font-mono text-white">
+                  <div className="mt-1 whitespace-nowrap rounded-lg border border-rose-300 bg-white/95 backdrop-blur-md px-2.5 py-0.5 text-[11px] font-mono font-bold text-[#263B50] shadow-sm">
                     {pin.label} ({pin.category})
                   </div>
                 </div>
@@ -355,13 +361,13 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
             {/* Pin Placement Configuration Bar */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 pt-1">
               <div>
-                <label className="block text-xs text-slate-400 mb-1">
+                <label className="block text-xs font-semibold text-[#52667A] mb-1">
                   New Pin Category (When Clicking Image):
                 </label>
                 <select
                   value={activePinCategory}
                   onChange={(e) => setActivePinCategory(e.target.value as ObservationCategory)}
-                  className="w-full rounded-lg border border-slate-700 bg-[#061421] px-3 py-1.5 text-xs text-white"
+                  className="w-full rounded-xl border border-[#70CFFF]/50 bg-white px-3 py-2 text-xs font-medium text-[#263B50]"
                 >
                   {ALL_CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -372,14 +378,14 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">
+                <label className="block text-xs font-semibold text-[#52667A] mb-1">
                   New Pin Custom Label:
                 </label>
                 <input
                   type="text"
                   value={newPinLabel}
                   onChange={(e) => setNewPinLabel(e.target.value)}
-                  className="w-full rounded-lg border border-slate-700 bg-[#061421] px-3 py-1.5 text-xs text-white"
+                  className="w-full rounded-xl border border-[#70CFFF]/50 bg-white px-3 py-2 text-xs text-[#263B50]"
                   placeholder="Enter hotspot label..."
                 />
               </div>
@@ -387,7 +393,7 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
               <div className="flex items-end">
                 <button
                   onClick={() => setPins([])}
-                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-700 bg-[#061421] px-3 py-1.5 text-xs text-slate-300 hover:border-[#FF7068] hover:text-[#FF7068] cursor-pointer"
+                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-white px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 cursor-pointer"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                   <span>Clear All Pins ({pins.length})</span>
@@ -398,20 +404,20 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
         </div>
 
         {/* Right Column: Observation Category Selector, Station Association & Demonstration Output */}
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 flex flex-col justify-between space-y-5">
+        <div className="glass-panel rounded-2xl p-5 sm:p-6 flex flex-col justify-between space-y-5">
           <div className="space-y-4">
             <div>
-              <div className="text-xs font-mono text-[#20D6D0]">
-                OBSERVATION TAGGING & STATION LINK
+              <div className="text-xs font-mono font-bold text-[#0D9488]">
+                OBSERVATION TAGGING &amp; STATION LINK
               </div>
-              <h2 className="mt-1 text-lg font-bold text-white">
+              <h2 className="mt-1 text-lg font-bold text-[#263B50]">
                 Visible Pollution Classification
               </h2>
             </div>
 
             {/* 1. Associate with Station A, B, or C */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">
+              <label className="block text-xs font-bold text-[#263B50] mb-2">
                 Associate Observation with Monitoring Station:
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -419,10 +425,10 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
                   <button
                     key={id}
                     onClick={() => setAssociatedStation(id)}
-                    className={`rounded-lg border py-2 text-xs font-semibold transition-colors cursor-pointer ${
+                    className={`rounded-xl border py-2 text-xs font-bold transition-all cursor-pointer ${
                       associatedStation === id
-                        ? 'border-[#20D6D0] bg-[#20D6D0] text-[#061421]'
-                        : 'border-slate-800 bg-[#061421] text-slate-300 hover:text-white'
+                        ? 'border-[#20CFC6] bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] text-white shadow-xs'
+                        : 'border-[#70CFFF]/40 bg-white/80 text-[#52667A] hover:text-[#263B50]'
                     }`}
                   >
                     Station {id}
@@ -431,9 +437,9 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
               </div>
             </div>
 
-            {/* 2. Visible Pollution Category Selection (4 Mandatory Categories) */}
+            {/* 2. Visible Pollution Category Selection */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">
+              <label className="block text-xs font-bold text-[#263B50] mb-2">
                 Select Visible Pollution Categories:
               </label>
               <div className="space-y-2">
@@ -444,14 +450,14 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
                       key={cat}
                       type="button"
                       onClick={() => toggleCategory(cat)}
-                      className={`flex w-full items-center justify-between rounded-lg border px-3 py-2 text-xs font-medium transition-colors cursor-pointer ${
+                      className={`flex w-full items-center justify-between rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer ${
                         checked
-                          ? 'border-[#20D6D0] bg-[#20D6D0]/15 text-white'
-                          : 'border-slate-800 bg-[#061421] text-slate-400 hover:text-white'
+                          ? 'border-[#20CFC6] bg-[#C9F5F5]/65 text-[#263B50]'
+                          : 'border-[#70CFFF]/35 bg-white/75 text-[#71869A] hover:text-[#263B50]'
                       }`}
                     >
                       <span>{cat}</span>
-                      <span className="font-mono text-[11px] text-[#20D6D0]">
+                      <span className="font-mono text-[11px] font-bold text-[#0D9488]">
                         {checked ? '[SELECTED]' : '[CLICK TO TAG]'}
                       </span>
                     </button>
@@ -462,42 +468,42 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
 
             {/* 3. Field Verification Notes */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Observation & Field Verification Notes:
+              <label className="block text-xs font-bold text-[#263B50] mb-1">
+                Observation &amp; Field Verification Notes:
               </label>
               <textarea
                 rows={2}
                 value={observationNotes}
                 onChange={(e) => setObservationNotes(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-[#061421] p-2.5 text-xs text-slate-200"
+                className="w-full rounded-xl border border-[#70CFFF]/50 bg-white p-2.5 text-xs text-[#263B50]"
               />
             </div>
 
             {/* 4. Demonstration Output Summary */}
             {demoExecuted && (
-              <div className="rounded-lg border border-[#20D6D0]/40 bg-[#061421] p-3.5 space-y-2 text-xs">
-                <div className="font-mono font-bold text-[#20D6D0]">
+              <div className="glass-subcard rounded-xl p-3.5 space-y-2 text-xs">
+                <div className="font-mono font-bold text-[#0D9488]">
                   DEMONSTRATION ASSESSMENT SUMMARY
                 </div>
                 <div>
-                  <span className="text-slate-400">Linked Station: </span>
-                  <span className="font-semibold text-white">Station {associatedStation}</span>
+                  <span className="text-[#71869A]">Linked Station: </span>
+                  <span className="font-bold text-[#263B50]">Station {associatedStation}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400">Tagged Categories: </span>
-                  <span className="font-mono text-[#F4B942]">
+                  <span className="text-[#71869A]">Tagged Categories: </span>
+                  <span className="font-mono font-bold text-[#0284C7]">
                     {selectedCategories.length > 0
                       ? selectedCategories.join(' · ')
                       : 'None selected'}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400">Illustrative Detection Status: </span>
-                  <span className="text-slate-200">
+                  <span className="text-[#71869A]">Illustrative Detection Status: </span>
+                  <span className="text-[#263B50]">
                     Local visual inspection complete ({pins.length} annotated region(s)).
                   </span>
                 </div>
-                <div className="pt-1 text-[#FF7068] font-medium">
+                <div className="pt-1 text-rose-600 font-semibold">
                   Mandatory Verification Notice: Visual observation requires on-site field verification and cannot detect dissolved heavy metals.
                 </div>
               </div>
@@ -507,12 +513,12 @@ export const DroneIntelligenceView: React.FC<DroneIntelligenceViewProps> = ({
           <div className="space-y-2">
             <button
               onClick={handleSaveObservationToGis}
-              className="w-full rounded-lg bg-[#20D6D0] py-2.5 text-xs font-bold text-[#061421] hover:bg-[#00AFA7] hover:text-white transition-colors cursor-pointer"
+              className="w-full rounded-xl bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] py-2.5 text-xs font-bold text-white shadow-[0_8px_20px_-6px_rgba(32,207,198,0.5)] hover:opacity-95 transition-all cursor-pointer"
             >
-              Save & Link Observation to Station {associatedStation} GIS Map
+              Save &amp; Link Observation to Station {associatedStation} GIS Map
             </button>
             {savedBanner && (
-              <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
+              <div className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">
                 {savedBanner}
               </div>
             )}

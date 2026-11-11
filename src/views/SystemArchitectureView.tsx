@@ -173,23 +173,23 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Architecture Prototype Honesty Header */}
-      <div className="rounded-xl border border-[#20D6D0]/30 bg-[#0B2030] p-5">
+      <div className="glass-panel rounded-2xl p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-          <span className="text-[#20D6D0] font-bold">
+          <span className="text-[#0D9488] font-bold">
             DUAL-TRACK ENVIRONMENTAL MONITORING ARCHITECTURE
           </span>
-          <span className="text-[#F4B942]">
+          <span className="text-amber-600 font-semibold">
             INTERACTIVE WEB PROTOTYPE OF PROPOSED FRAMEWORK
           </span>
         </div>
-        <h1 className="mt-1 text-xl font-bold text-white sm:text-2xl">
+        <h1 className="mt-1.5 text-xl font-extrabold text-[#263B50] sm:text-2xl">
           System Architecture & Implementation Transparency Matrix
         </h1>
-        <p className="mt-1 text-sm text-slate-300 leading-relaxed">
+        <p className="mt-1.5 text-sm text-[#52667A] leading-relaxed">
           This interactive diagram illustrates the two parallel tracks of the <strong>RIVER INTELLIGENCE</strong> framework: the <strong>IoT & Machine Learning Telemetry Pipeline</strong> and the <strong>Drone-Assisted Visual GIS Track</strong>. Click any architectural node to inspect what is simulated in this web prototype versus what is proposed for future field deployment.
         </p>
-        <div className="mt-3 rounded-lg border border-slate-800 bg-[#061421] px-4 py-2.5 text-xs text-slate-300">
-          <strong className="text-[#20D6D0]">Prototype Transparency Note:</strong> This web application is a self-contained React + TypeScript interactive demonstration of the proposed framework. It does not claim to be an active Python/Streamlit server deployment or a live physical IoT hardware installation.
+        <div className="mt-3 rounded-xl glass-subcard px-4 py-3 text-xs text-[#263B50]">
+          <strong className="text-[#0D9488]">Prototype Transparency Note:</strong> This web application is a self-contained React + TypeScript interactive demonstration of the proposed framework. It does not claim to be an active Python/Streamlit server deployment or a live physical IoT hardware installation.
         </div>
       </div>
 
@@ -198,12 +198,12 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
         {/* Dual Track Pipelines (2 Columns) */}
         <div className="lg:col-span-2 grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Track 1: IoT & ML Pipeline */}
-          <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5">
-            <div className="border-b border-slate-800 pb-3 mb-4">
-              <div className="text-xs font-mono font-bold text-[#20D6D0]">
+          <div className="glass-card rounded-2xl p-5">
+            <div className="border-b border-[#70CFFF]/30 pb-3 mb-4">
+              <div className="text-xs font-mono font-bold text-[#0D9488]">
                 TRACK 01 · SENSOR & ML PIPELINE
               </div>
-              <h2 className="mt-0.5 text-base font-bold text-white">
+              <h2 className="mt-0.5 text-base font-bold text-[#263B50]">
                 IoT Telemetry to Dashboard Flow
               </h2>
             </div>
@@ -219,26 +219,26 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
                       onClick={() => setSelectedNode(node)}
                       className={`rounded-xl border p-3.5 transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-[#20D6D0] bg-[#061421] shadow-sm'
-                          : 'border-slate-800 bg-[#061421]/60 hover:border-slate-700'
+                          ? 'border-[#20CFC6] bg-white/95 shadow-md ring-2 ring-[#20CFC6]/20'
+                          : 'border-[#70CFFF]/30 bg-white/60 hover:border-[#20CFC6]/60 hover:bg-white/85'
                       }`}
                     >
                       <div className="flex items-center justify-between text-xs font-mono">
-                        <span className="text-[#20D6D0] font-bold">
+                        <span className="text-[#0D9488] font-bold">
                           NODE {node.stepNumber}
                         </span>
                         <span
                           className={
-                            isSimulated ? 'text-emerald-400' : 'text-[#F4B942]'
+                            isSimulated ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'
                           }
                         >
                           {node.implementationState}
                         </span>
                       </div>
-                      <div className="mt-1 text-sm font-bold text-white">
+                      <div className="mt-1 text-sm font-bold text-[#263B50]">
                         {node.title}
                       </div>
-                      <p className="mt-1 text-xs text-slate-400 line-clamp-2">
+                      <p className="mt-1 text-xs text-[#52667A] line-clamp-2">
                         {node.prototypeMechanism}
                       </p>
                     </div>
@@ -246,8 +246,8 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
                     {index < IOT_TRACK_NODES.length - 1 && (
                       <div className="flex justify-center py-0.5">
                         <div className="flex flex-col items-center">
-                          <div className="h-3 w-0.5 bg-[#20D6D0]/50" />
-                          <ArrowDown className="h-3.5 w-3.5 text-[#20D6D0]" />
+                          <div className="h-3 w-0.5 bg-[#20CFC6]/60" />
+                          <ArrowDown className="h-3.5 w-3.5 text-[#0D9488]" />
                         </div>
                       </div>
                     )}
@@ -258,12 +258,12 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
           </div>
 
           {/* Track 2: Parallel Drone-Assisted Analysis Track */}
-          <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5">
-            <div className="border-b border-slate-800 pb-3 mb-4">
-              <div className="text-xs font-mono font-bold text-[#F4B942]">
+          <div className="glass-card rounded-2xl p-5">
+            <div className="border-b border-[#70CFFF]/30 pb-3 mb-4">
+              <div className="text-xs font-mono font-bold text-[#0284C7]">
                 TRACK 02 · PARALLEL AERIAL TRACK
               </div>
-              <h2 className="mt-0.5 text-base font-bold text-white">
+              <h2 className="mt-0.5 text-base font-bold text-[#263B50]">
                 Drone-Assisted GIS Integration
               </h2>
             </div>
@@ -279,26 +279,26 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
                       onClick={() => setSelectedNode(node)}
                       className={`rounded-xl border p-3.5 transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-[#20D6D0] bg-[#061421] shadow-sm'
-                          : 'border-slate-800 bg-[#061421]/60 hover:border-slate-700'
+                          ? 'border-[#20CFC6] bg-white/95 shadow-md ring-2 ring-[#20CFC6]/20'
+                          : 'border-[#70CFFF]/30 bg-white/60 hover:border-[#20CFC6]/60 hover:bg-white/85'
                       }`}
                     >
                       <div className="flex items-center justify-between text-xs font-mono">
-                        <span className="text-[#F4B942] font-bold">
+                        <span className="text-[#0284C7] font-bold">
                           AERIAL {node.stepNumber}
                         </span>
                         <span
                           className={
-                            isSimulated ? 'text-emerald-400' : 'text-[#F4B942]'
+                            isSimulated ? 'text-emerald-600 font-semibold' : 'text-amber-600 font-semibold'
                           }
                         >
                           {node.implementationState}
                         </span>
                       </div>
-                      <div className="mt-1 text-sm font-bold text-white">
+                      <div className="mt-1 text-sm font-bold text-[#263B50]">
                         {node.title}
                       </div>
-                      <p className="mt-1 text-xs text-slate-400 line-clamp-2">
+                      <p className="mt-1 text-xs text-[#52667A] line-clamp-2">
                         {node.prototypeMechanism}
                       </p>
                     </div>
@@ -306,8 +306,8 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
                     {index < DRONE_TRACK_NODES.length - 1 && (
                       <div className="flex justify-center py-0.5">
                         <div className="flex flex-col items-center">
-                          <div className="h-3 w-0.5 bg-[#F4B942]/50" />
-                          <ArrowDown className="h-3.5 w-3.5 text-[#F4B942]" />
+                          <div className="h-3 w-0.5 bg-[#70CFFF]/70" />
+                          <ArrowDown className="h-3.5 w-3.5 text-[#0284C7]" />
                         </div>
                       </div>
                     )}
@@ -316,11 +316,11 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
               })}
 
               {/* Convergence Indicator into GIS Mapping */}
-              <div className="mt-4 rounded-xl border border-[#20D6D0]/30 bg-[#061421] p-3.5 text-xs text-slate-300">
-                <div className="font-mono font-bold text-[#20D6D0]">
+              <div className="mt-4 rounded-xl border border-[#20CFC6]/45 bg-[#EDF8FF]/90 p-3.5 text-xs text-[#263B50]">
+                <div className="font-mono font-bold text-[#0D9488]">
                   ⇄ CONVERGENCE POINT: GIS MAPPING & DASHBOARD
                 </div>
-                <p className="mt-1 text-slate-400">
+                <p className="mt-1 text-[#52667A]">
                   Both tracks converge in the GIS Pollution Map, overlaying surface drone annotations with submerged station telemetry.
                 </p>
               </div>
@@ -329,43 +329,43 @@ export const SystemArchitectureView: React.FC<SystemArchitectureViewProps> = ({
         </div>
 
         {/* Right Column: Detailed Node Inspector */}
-        <div className="rounded-xl border border-slate-800 bg-[#0B2030] p-5 flex flex-col justify-between">
+        <div className="glass-card rounded-2xl p-5 flex flex-col justify-between">
           <div className="space-y-4">
             <div>
-              <div className="text-xs font-mono text-[#20D6D0]">
+              <div className="text-xs font-mono font-bold text-[#0D9488]">
                 ARCHITECTURAL NODE SPECIFICATION
               </div>
-              <h2 className="mt-1 text-xl font-bold text-white">
+              <h2 className="mt-1 text-xl font-bold text-[#263B50]">
                 {selectedNode.title}
               </h2>
-              <div className="mt-1 text-xs font-mono text-[#F4B942]">
+              <div className="mt-1 text-xs font-mono font-semibold text-amber-600">
                 Status: {selectedNode.implementationState}
               </div>
             </div>
 
-            <div className="rounded-lg border border-slate-800 bg-[#061421] p-4 space-y-1.5">
-              <div className="text-xs font-semibold text-[#20D6D0]">
+            <div className="rounded-xl glass-subcard p-4 space-y-1.5">
+              <div className="text-xs font-bold text-[#0D9488]">
                 What Is Implemented in This Prototype:
               </div>
-              <p className="text-xs text-slate-200 leading-relaxed">
+              <p className="text-xs text-[#263B50] leading-relaxed">
                 {selectedNode.prototypeMechanism}
               </p>
             </div>
 
-            <div className="rounded-lg border border-slate-800 bg-[#061421] p-4 space-y-1.5">
-              <div className="text-xs font-semibold text-[#F4B942]">
+            <div className="rounded-xl glass-subcard p-4 space-y-1.5">
+              <div className="text-xs font-bold text-[#0284C7]">
                 Proposed Future Field / Production Specification:
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-[#52667A] leading-relaxed">
                 {selectedNode.proposedFieldSpec}
               </p>
             </div>
           </div>
 
-          <div className="mt-6 space-y-3 border-t border-slate-800 pt-4">
+          <div className="mt-6 space-y-3 border-t border-[#70CFFF]/30 pt-4">
             <button
               onClick={() => onNavigate(selectedNode.linkedModule)}
-              className="w-full rounded-lg bg-[#20D6D0] py-2.5 text-xs font-bold text-[#061421] hover:bg-[#00AFA7] hover:text-white transition-colors cursor-pointer"
+              className="w-full rounded-xl bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] py-2.5 text-xs font-bold text-white shadow-sm hover:opacity-95 transition-all cursor-pointer"
             >
               Open Corresponding Prototype Module →
             </button>
