@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #061421;
+    color: #F1F5F9;
+    overflow-x: hidden;
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle technical coordinate background grid */
+.bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(32, 214, 208, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(32, 214, 208, 0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* Animated river flow dash */
+@keyframes riverFlow {
+  0% {
+    stroke-dashoffset: 120;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-river-flow {
+  stroke-dasharray: 8 16;
+  animation: riverFlow 4.5s linear infinite;
+}
+
+.animate-river-flow-slow {
+  stroke-dasharray: 4 20;
+  animation: riverFlow 7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-river-flow,
+  .animate-river-flow-slow {
+    animation: none;
+  }
+}
+
+/* Print stylesheet for Alerts & Reports summary */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}

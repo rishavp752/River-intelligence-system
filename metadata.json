@@ -1,0 +1,6 @@
+{
+  "name": "RIVER INTELLIGENCE",
+  "description": "IoT- and AI-Based River Water Quality Monitoring with Heavy Metal Risk Prediction and Drone-Assisted Pollution Mapping — Asansol Engineering College CSE Group 4 Prototype.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#061421" />
+      <stop offset="100%" stop-color="#0B2030" />
+    </linearGradient>
+    <linearGradient id="riverGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#20D6D0" />
+      <stop offset="50%" stop-color="#00AFA7" />
+      <stop offset="100%" stop-color="#20D6D0" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bgGrad)" stroke="#20D6D0" stroke-width="8" stroke-opacity="0.35" />
+  <circle cx="256" cy="256" r="168" fill="none" stroke="#20D6D0" stroke-width="3" stroke-opacity="0.2" stroke-dasharray="10 10" />
+  <path d="M 96 290 C 170 210, 220 340, 290 250 C 345 180, 385 240, 416 205" fill="none" stroke="url(#riverGrad)" stroke-width="28" stroke-linecap="round" />
+  <path d="M 96 340 C 175 270, 230 385, 305 300 C 355 245, 390 285, 416 260" fill="none" stroke="#00AFA7" stroke-width="14" stroke-linecap="round" opacity="0.75" />
+  <circle cx="136" cy="268" r="18" fill="#061421" stroke="#20D6D0" stroke-width="8" />
+  <circle cx="272" cy="268" r="22" fill="#061421" stroke="#FF7068" stroke-width="8" />
+  <circle cx="388" cy="222" r="18" fill="#061421" stroke="#F4B942" stroke-width="8" />
+  <text x="256" y="138" text-anchor="middle" fill="#FFFFFF" font-family="sans-serif" font-weight="bold" font-size="38" letter-spacing="4">RIVER AI</text>
+  <text x="256" y="428" text-anchor="middle" fill="#20D6D0" font-family="monospace" font-weight="bold" font-size="24" letter-spacing="3">STN A · B · C</text>
+</svg>
