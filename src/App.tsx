@@ -13,7 +13,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Cpu,
-  Download,
   FileSpreadsheet,
   FlaskConical,
   Info,
@@ -39,11 +38,6 @@ import {
   INITIAL_DRONE_OBSERVATIONS,
   INITIAL_GIS_HOTSPOTS,
 } from './data/initialData';
-import { usePWAInstall } from './hooks/usePWAInstall';
-import {
-  OfflineIndicator,
-  PWAInstallGuideModal,
-} from './components/PWAInstallModalAndBanner';
 import { OverviewView } from './views/OverviewView';
 import { LiveMonitoringView } from './views/LiveMonitoringView';
 import { WaterAnalyticsView } from './views/WaterAnalyticsView';
@@ -79,9 +73,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<NavigationTab>('overview');
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [installModalOpen, setInstallModalOpen] = useState<boolean>(false);
-
-  const { isInstallable, isInstalled, install } = usePWAInstall();
 
   const [stations, setStations] = useState<Record<StationId, StationData>>(() => {
     try {
@@ -335,28 +326,8 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleInstallClick = async () => {
-    if (isInstallable) {
-      const accepted = await install();
-      if (accepted) {
-        appendLog('PWA', 'Installed RIVER INTELLIGENCE as standalone application.');
-        return;
-      }
-    }
-    setInstallModalOpen(true);
-  };
-
   return (
     <div className="min-h-screen bg-[#061421] text-slate-100 flex flex-col">
-      {/* Offline Connectivity Indicator */}
-      <OfflineIndicator />
-
-      {/* Cross-Platform PWA Install Guide Modal */}
-      <PWAInstallGuideModal
-        isOpen={installModalOpen}
-        onClose={() => setInstallModalOpen(false)}
-      />
-
       {/* Top Bar Contract: 3 Zones Separated by gap-8 */}
       <header className="sticky top-0 z-30 flex items-center justify-between gap-8 border-b border-slate-800/90 bg-[#0B2030]/95 px-4 py-3 backdrop-blur sm:px-6 no-print">
         {/* Zone 1: Brand Title (Single text element wordmark) */}
@@ -443,14 +414,12 @@ export default function App() {
 
         {/* Zone 3: 1 Primary Action Button (+ Mobile Drawer Trigger on small screens) */}
         <div className="flex items-center gap-2.5 shrink-0">
-          {!isInstalled && (
-            <button
-              onClick={handleInstallClick}
-              className="min-h-[40px] px-3.5 py-2 text-xs font-bold text-[#061421] bg-[#20D6D0] rounded-lg hover:bg-[#00AFA7] hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              Install App
-            </button>
-          )}
+          <button
+            onClick={() => navigateTo('alerts-reports')}
+            className="min-h-[40px] px-3.5 py-2 text-xs font-bold text-[#061421] bg-[#20D6D0] rounded-lg hover:bg-[#00AFA7] hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+          >
+            Alerts & Reports
+          </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -498,26 +467,15 @@ export default function App() {
             })}
           </div>
 
-          {/* Sidebar Install App Action, Collapse Toggle & Academic Credit Footer */}
+          {/* Sidebar Collapse Toggle & Academic Credit Footer */}
           <div className="border-t border-slate-800 p-3 space-y-2">
-            {!isInstalled && (
-              <button
-                onClick={handleInstallClick}
-                title="Install RIVER INTELLIGENCE as an App"
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#20D6D0]/40 bg-[#20D6D0]/10 py-2 px-3 text-xs font-semibold text-[#20D6D0] hover:bg-[#20D6D0]/20 cursor-pointer whitespace-nowrap shrink-0"
-              >
-                <Download className="h-3.5 w-3.5 shrink-0" />
-                {!sidebarCollapsed && <span>Install App (PWA)</span>}
-              </button>
-            )}
-
             {!sidebarCollapsed && (
               <div className="rounded-lg bg-[#061421] p-3 text-[11px] text-slate-400">
                 <div className="font-semibold text-slate-200">
                   Asansol Engineering College
                 </div>
                 <div className="mt-0.5 font-mono">
-                  CSE · Group 4 · 5 Members
+                  CSE · Group 4 · 2026–2027
                 </div>
               </div>
             )}
@@ -577,17 +535,7 @@ export default function App() {
                 })}
               </div>
 
-              <div className="mt-4 border-t border-slate-800 pt-3 space-y-2">
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleInstallClick();
-                  }}
-                  className="min-h-[44px] flex w-full items-center justify-center gap-2 rounded-lg bg-[#20D6D0] px-3 py-2.5 text-xs font-bold text-[#061421] cursor-pointer"
-                >
-                  <Download className="h-4 w-4" />
-                  <span>Install App on Phone / Laptop</span>
-                </button>
+              <div className="mt-4 border-t border-slate-800 pt-3">
                 <div className="rounded-lg bg-[#061421] p-2.5 text-[11px] text-slate-400">
                   Asansol Engineering College · CSE Group 4 (Rolls 139, 140, 141, 142, 144)
                 </div>
@@ -717,10 +665,7 @@ export default function App() {
                 )}
 
                 {activeTab === 'about-project' && (
-                  <AboutProjectView
-                    onNavigate={navigateTo}
-                    onOpenInstallModal={() => setInstallModalOpen(true)}
-                  />
+                  <AboutProjectView onNavigate={navigateTo} />
                 )}
               </motion.div>
             </AnimatePresence>
@@ -737,26 +682,12 @@ export default function App() {
               <div className="text-slate-300">
                 Team: 139 — Rijoy Biswas · 140 — Rishabh Kumar Shaw · 141 — Rishan Nandi · 142 — Rishav Kumar Pandey · 144 — Ritik Kumar Ram
               </div>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => navigateTo('about-project')}
-                  className="text-[#20D6D0] hover:underline cursor-pointer whitespace-nowrap"
-                >
-                  Download Source ZIP
-                </button>
-                <button
-                  onClick={() => setInstallModalOpen(true)}
-                  className="text-[#20D6D0] hover:underline cursor-pointer whitespace-nowrap"
-                >
-                  Install PWA Guide
-                </button>
-              </div>
             </div>
           </footer>
         </div>
       </div>
 
-      {/* Mobile Bottom Quick-Navigation Bar (Android Thumb-Zone Ergonomics) */}
+      {/* Mobile Bottom Quick-Navigation Bar */}
       <nav
         aria-label="Mobile Bottom Navigation"
         className="fixed bottom-0 left-0 right-0 z-30 grid grid-cols-5 items-center border-t border-slate-800 bg-[#0B2030]/95 backdrop-blur lg:hidden no-print"
