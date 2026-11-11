@@ -7,6 +7,7 @@ const zip = new JSZip();
 
 const TOP_FILES = [
   'package.json',
+  'package-lock.json',
   'tsconfig.json',
   'vite.config.ts',
   'index.html',
