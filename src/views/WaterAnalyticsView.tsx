@@ -33,14 +33,14 @@ export const WaterAnalyticsView: React.FC<WaterAnalyticsViewProps> = ({
 }) => {
   const { theme } = useTheme();
   const isNight = theme === 'night';
-  const chartGridColor = isNight ? 'rgba(56, 189, 248, 0.16)' : '#D8EEF8';
-  const chartAxisColor = isNight ? '#9CC0E0' : '#52667A';
+  const chartGridColor = isNight ? 'rgba(255, 255, 255, 0.08)' : '#D8EEF8';
+  const chartAxisColor = isNight ? '#9CA3AF' : '#52667A';
   const tooltipStyle = {
-    backgroundColor: isNight ? 'rgba(7, 22, 44, 0.96)' : 'rgba(255, 255, 255, 0.96)',
-    borderColor: isNight ? 'rgba(0, 242, 254, 0.45)' : '#70CFFF',
+    backgroundColor: isNight ? 'rgba(20, 22, 27, 0.96)' : 'rgba(255, 255, 255, 0.96)',
+    borderColor: isNight ? 'rgba(255, 255, 255, 0.14)' : '#70CFFF',
     borderRadius: '12px',
     fontSize: '12px',
-    color: isNight ? '#ECF6FF' : '#263B50',
+    color: isNight ? '#F3F4F6' : '#263B50',
   };
 
   const [selectedParam, setSelectedParam] = useState<ParameterKey>('turbidity');

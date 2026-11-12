@@ -52,25 +52,25 @@ export const RiverCorridorSvg: React.FC<RiverCorridorSvgProps> = ({
   const riverPath =
     'M 30 120 C 160 110, 230 195, 355 215 C 475 235, 530 250, 645 215 C 760 180, 845 145, 970 165';
 
-  const plaqueBg = isNight ? '#08182E' : '#FFFFFF';
-  const plaqueTextPrimary = isNight ? '#ECF6FF' : '#263B50';
-  const plaqueTextSecondary = isNight ? '#9CC0E0' : '#52667A';
-  const sectorLabelColor = isNight ? '#9CC0E0' : '#52667A';
-  const sectorMidLabelColor = isNight ? '#ECF6FF' : '#263B50';
+  const plaqueBg = isNight ? '#1B1E24' : '#FFFFFF';
+  const plaqueTextPrimary = isNight ? '#F3F4F6' : '#263B50';
+  const plaqueTextSecondary = isNight ? '#9CA3AF' : '#52667A';
+  const sectorLabelColor = isNight ? '#9CA3AF' : '#52667A';
+  const sectorMidLabelColor = isNight ? '#F3F4F6' : '#263B50';
 
   return (
     <div
       className={`relative w-full overflow-hidden rounded-2xl border bg-tech-grid select-none transition-colors duration-500 ${
         isNight
-          ? 'border-[#00F2FE]/30 bg-gradient-to-br from-[#040E1D] via-[#07182E] to-[#0A2240] shadow-[0_18px_44px_-12px_rgba(0,242,254,0.16)]'
-          : 'border-[#20CFC6]/35 bg-gradient-to-br from-[#F7FCFF] via-[#EDF8FF] to-[#E2F4FF] shadow-[0_14px_38px_-12px_rgba(32,207,198,0.16)]'
+          ? 'border-white/10 bg-gradient-to-br from-[#121418] via-[#16191F] to-[#1A1D24] shadow-[0_18px_44px_-12px_rgba(0,0,0,0.65)]'
+          : 'border-[#20CFC6]/30 bg-gradient-to-br from-[#F7FCFF] via-[#EDF8FF] to-[#E2F4FF] shadow-[0_14px_38px_-12px_rgba(32,207,198,0.14)]'
       }`}
     >
       {/* Top Translucent Glass Telemetry Ribbon */}
       <div
         className={`flex flex-wrap items-center justify-between gap-2 border-b backdrop-blur-md px-4 py-2.5 text-xs transition-colors duration-500 ${
           isNight
-            ? 'border-[#00F2FE]/20 bg-[#07162C]/80'
+            ? 'border-white/10 bg-[#181B21]/85'
             : 'border-[#20CFC6]/20 bg-white/75'
         }`}
       >

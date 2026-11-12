@@ -7,23 +7,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   Activity,
-  BarChart3,
-  BrainCircuit,
   Camera,
-  ChevronLeft,
-  ChevronRight,
-  Cpu,
-  FileSpreadsheet,
-  FlaskConical,
   Info,
   LayoutDashboard,
   Map,
-  Menu,
   Moon,
   Sparkles,
   Sun,
   Waves,
-  X,
 } from 'lucide-react';
 import {
   NavigationTab,
@@ -56,24 +47,7 @@ import { AlertsReportsView } from './views/AlertsReportsView';
 import { SystemArchitectureView } from './views/SystemArchitectureView';
 import { AboutProjectView } from './views/AboutProjectView';
 
-const SIDEBAR_ITEMS: {
-  id: NavigationTab;
-  label: string;
-  icon: React.FC<{ className?: string }>;
-}[] = [
-  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'live-monitoring', label: 'Live Monitoring', icon: Activity },
-  { id: 'water-analytics', label: 'Water Analytics', icon: BarChart3 },
-  { id: 'ai-risk', label: 'AI Risk Assessment', icon: BrainCircuit },
-  { id: 'heavy-metals', label: 'Heavy Metal Analysis', icon: FlaskConical },
-  { id: 'gis-map', label: 'GIS Pollution Map', icon: Map },
-  { id: 'drone-intelligence', label: 'Drone Intelligence', icon: Camera },
-  { id: 'alerts-reports', label: 'Alerts & Reports', icon: FileSpreadsheet },
-  { id: 'system-architecture', label: 'System Architecture', icon: Cpu },
-  { id: 'about-project', label: 'About Project', icon: Info },
-];
-
-const TOP_NAV_LINKS: {
+const ESSENTIAL_NAV_TABS: {
   id: NavigationTab;
   label: string;
   icon: React.FC<{ className?: string }>;
@@ -82,12 +56,23 @@ const TOP_NAV_LINKS: {
   { id: 'live-monitoring', label: 'Live Monitoring', icon: Activity },
   { id: 'gis-map', label: 'GIS Map', icon: Map },
   { id: 'drone-intelligence', label: 'Drone Analysis', icon: Camera },
-  { id: 'about-project', label: 'About Project', icon: Info },
+  { id: 'about-project', label: 'About', icon: Info },
+];
+
+const MONITORING_SUB_LENSES: {
+  id: NavigationTab;
+  label: string;
+}[] = [
+  { id: 'live-monitoring', label: 'Station Telemetry' },
+  { id: 'water-analytics', label: 'Parameter Analytics' },
+  { id: 'ai-risk', label: 'AI Risk & ML Pipeline' },
+  { id: 'heavy-metals', label: 'Heavy Metal Screening' },
+  { id: 'alerts-reports', label: 'Alerts & Reports' },
 ];
 
 const STORAGE_KEY_STATIONS = 'river_intelligence_stations_v1';
 const STORAGE_KEY_ALERTS = 'river_intelligence_alerts_v1';
-const SESSION_KEY_INTRO = 'river_intelligence_intro_seen_v3';
+const SESSION_KEY_INTRO = 'river_intelligence_intro_seen_v4';
 
 function AppShell() {
   const { theme, toggleTheme } = useTheme();
@@ -102,8 +87,6 @@ function AppShell() {
   });
 
   const [activeTab, setActiveTab] = useState<NavigationTab>('overview');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const [stations, setStations] = useState<Record<StationId, StationData>>(() => {
     try {
@@ -190,7 +173,6 @@ function AppShell() {
     ]);
   }, []);
 
-  // Persist station and alert changes to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY_STATIONS, JSON.stringify(stations));
@@ -207,7 +189,6 @@ function AppShell() {
     }
   }, [alerts]);
 
-  // Controlled variation generator around baseline values
   const stepSimulationReadings = useCallback(() => {
     const nowLabel = new Date().toLocaleTimeString([], {
       hour: '2-digit',
@@ -362,451 +343,308 @@ function AppShell() {
 
   const navigateTo = (tab: NavigationTab) => {
     setActiveTab(tab);
-    setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const isMonitoringFamily =
+    activeTab === 'live-monitoring' ||
+    activeTab === 'water-analytics' ||
+    activeTab === 'ai-risk' ||
+    activeTab === 'heavy-metals' ||
+    activeTab === 'alerts-reports';
+
+  const topNavResolvedId: NavigationTab = isMonitoringFamily
+    ? 'live-monitoring'
+    : activeTab === 'system-architecture'
+    ? 'about-project'
+    : activeTab;
+
   return (
     <div className="relative min-h-screen aquatic-mesh-bg text-[#263B50] flex flex-col">
-      {/* Ambient Animated Aquatic Environment (Liquid Orbs, Caustic Rays, Floating Particles) */}
+      {/* Subtle Ambient Aquatic Horizon */}
       <AmbientAquaticBackdrop />
 
-      {/* Cinematic Opening Experience (Plays once per session, skippable) */}
+      {/* Cinematic Minimal Opening Experience */}
       <AnimatePresence>
         {showOpeningIntro && <AquaticOpeningIntro onFinish={handleFinishIntro} />}
       </AnimatePresence>
 
-      {/* Translucent Floating Liquid-Glass Navigation Bar */}
-      <header className="sticky top-0 z-30 px-3 pt-2.5 sm:px-6 sm:pt-3 no-print">
-        <div className="mx-auto max-w-[1440px] flex items-center justify-between gap-4 lg:gap-8 rounded-2xl glass-panel px-4 py-2.5 sm:px-6">
-          {/* Zone 1: Brand Title */}
+      {/* Compact, Minimal Floating Glass Navigation Bar (5 Essential Tabs + Theme Switch) */}
+      <header className="sticky top-0 z-30 px-4 pt-4 sm:px-8 sm:pt-5 no-print">
+        <div className="mx-auto max-w-6xl flex items-center justify-between gap-4 rounded-full glass-panel px-5 py-2.5 sm:px-6">
+          {/* Brand Wordmark */}
           <a
             href="#overview"
             onClick={(e) => {
               e.preventDefault();
               navigateTo('overview');
             }}
-            className="group flex items-center gap-2.5 text-base sm:text-lg font-extrabold tracking-tight text-[#263B50] whitespace-nowrap shrink-0"
+            className="flex items-center gap-2.5 text-sm sm:text-base font-medium tracking-[0.12em] uppercase text-[#263B50] whitespace-nowrap shrink-0"
           >
-            <span
-              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-transform duration-300 group-hover:scale-105 ${
-                isNight
-                  ? 'border-[#00F2FE]/50 bg-gradient-to-br from-[#0A2547] to-[#00F2FE]/20 text-[#00F2FE] shadow-[0_0_16px_rgba(0,242,254,0.28)]'
-                  : 'border-[#20CFC6]/50 bg-gradient-to-br from-[#C9F5F5] to-[#EDF8FF] text-[#0D9488] shadow-xs'
-              }`}
-            >
-              <Waves className="h-4 w-4" />
-            </span>
-            <div className="flex flex-col">
-              <span className="leading-none">RIVER INTELLIGENCE</span>
-              <span className="mt-0.5 text-[10px] font-mono font-bold tracking-widest text-[#0D9488] hidden sm:inline">
-                AQUA NEXUS PLATFORM
-              </span>
-            </div>
+            <Waves className="h-4 w-4 text-[#0D9488]" />
+            <span>River Intelligence</span>
           </a>
 
-          {/* Zone 2: 5 Animated Navigation Links with Sliding Pill + Glowing Underline */}
-          <nav className="hidden md:flex items-center gap-1 text-xs lg:text-sm font-semibold text-[#52667A]">
-            {TOP_NAV_LINKS.map((link) => {
-              const Icon = link.icon;
-              const isActive = activeTab === link.id;
+          {/* 5 Essential Navigation Tabs */}
+          <nav
+            aria-label="Primary Navigation"
+            className="hidden md:flex items-center gap-1 text-xs font-medium"
+          >
+            {ESSENTIAL_NAV_TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = topNavResolvedId === tab.id;
               return (
                 <a
-                  key={link.id}
-                  href={`#${link.id}`}
+                  key={tab.id}
+                  href={`#${tab.id}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    navigateTo(link.id);
+                    navigateTo(tab.id);
                   }}
-                  className={`relative flex items-center gap-1.5 rounded-xl px-3.5 py-2 transition-colors whitespace-nowrap shrink-0 ${
+                  className={`group relative flex items-center gap-1.5 rounded-full px-4 py-2 transition-all duration-300 whitespace-nowrap shrink-0 ${
                     isActive
-                      ? 'text-[#0D9488] font-bold'
+                      ? 'text-[#0D9488] font-semibold'
                       : 'text-[#52667A] hover:text-[#263B50]'
                   }`}
                 >
                   {isActive && (
                     <motion.span
-                      layoutId="topNavActivePill"
+                      layoutId="minimalNavPill"
                       transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                      className={`absolute inset-0 -z-10 rounded-xl border ${
+                      className={`absolute inset-0 -z-10 rounded-full border ${
                         isNight
-                          ? 'border-[#00F2FE]/45 bg-[#00F2FE]/14 shadow-[0_0_18px_rgba(0,242,254,0.22)]'
-                          : 'border-[#20CFC6]/55 bg-[#C9F5F5]/75 shadow-[0_2px_12px_rgba(32,207,198,0.22)]'
+                          ? 'border-white/15 bg-white/[0.07] shadow-[0_4px_16px_rgba(0,0,0,0.45)]'
+                          : 'border-[#2B8A8E]/25 bg-[#E5F2F3]/85'
                       }`}
                     />
                   )}
-                  <Icon className="h-3.5 w-3.5 shrink-0" />
-                  <span>{link.label}</span>
-                  {isActive && (
-                    <motion.span
-                      layoutId="topNavLaserLine"
-                      transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-                      className="absolute bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-gradient-to-r from-[#20CFC6] via-[#38BDF8] to-[#20CFC6]"
-                    />
-                  )}
+                  <Icon className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                  <span className={`nav-link-underline ${isActive ? 'active' : ''}`}>
+                    {tab.label}
+                  </span>
                 </a>
               );
             })}
           </nav>
 
-          {/* Zone 3: Day/Night Theme Switch + Primary Action Button + Mobile Drawer Trigger */}
-          <div className="flex items-center gap-2.5 shrink-0">
-            {/* Magical Day / Night Theme Switch */}
+          {/* Compact Day / Night Toggle */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={toggleTheme}
               aria-label={isNight ? 'Switch to Day Mode' : 'Switch to Night Mode'}
-              title={isNight ? 'Switch to Bright Aqua Day Mode' : 'Switch to Deep Ocean Night Mode'}
-              className={`min-h-[40px] inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-bold transition-all cursor-pointer ${
-                isNight
-                  ? 'border-[#00F2FE]/45 bg-[#081A33]/90 text-[#00F2FE] shadow-[0_0_18px_rgba(0,242,254,0.2)] hover:border-[#00F2FE]'
-                  : 'border-[#20CFC6]/45 bg-white/85 text-[#263B50] shadow-xs hover:bg-[#EDF8FF]'
-              }`}
+              title={isNight ? 'Switch to Day Mode' : 'Switch to Night Mode'}
+              className="inline-flex items-center gap-2 rounded-full border border-[#70CFFF]/35 bg-white/75 px-3.5 py-1.5 text-xs font-medium text-[#263B50] cursor-pointer"
             >
               <motion.span
                 key={theme}
-                initial={{ rotate: -65, scale: 0.6, opacity: 0 }}
-                animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-                className="flex items-center justify-center"
+                initial={{ rotate: -45, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.25 }}
+                className="flex items-center"
               >
                 {isNight ? (
-                  <Moon className="h-4 w-4 text-[#00F2FE]" />
+                  <Moon className="h-3.5 w-3.5 text-[#66C4C8]" />
                 ) : (
-                  <Sun className="h-4 w-4 text-amber-500" />
+                  <Sun className="h-3.5 w-3.5 text-amber-500" />
                 )}
               </motion.span>
-              <span className="hidden sm:inline font-mono text-[11px]">
-                {isNight ? 'NIGHT MODE' : 'DAY MODE'}
+              <span className="font-mono text-[11px]">
+                {isNight ? 'Night' : 'Day'}
               </span>
-            </button>
-
-            <button
-              onClick={() => navigateTo('alerts-reports')}
-              className="btn-liquid-primary min-h-[40px] px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] rounded-xl shadow-[0_4px_14px_rgba(32,207,198,0.35)] whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              Alerts &amp; Reports
-            </button>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle Navigation Drawer"
-              className="lg:hidden min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl border border-[#70CFFF]/45 bg-white/80 text-[#263B50] hover:bg-[#EDF8FF] cursor-pointer"
-            >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Main Workspace Container: Left Collapsible Glass Sidebar + Content Stage */}
-      <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-1 gap-6 px-3 pt-4 sm:px-6 sm:pt-5">
-        {/* Desktop Collapsible Left Sidebar */}
-        <aside
-          className={`hidden lg:flex flex-col justify-between self-start sticky top-20 rounded-2xl glass-panel transition-all duration-200 shrink-0 no-print ${
-            sidebarCollapsed ? 'w-20' : 'w-64'
-          }`}
-        >
-          <div className="p-3 space-y-1">
-            {!sidebarCollapsed && (
-              <div className="px-3 py-2 text-[11px] font-mono font-bold text-[#0D9488]">
-                AQUA NEXUS MODULES
-              </div>
-            )}
-
-            {SIDEBAR_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => navigateTo(item.id)}
-                  title={item.label}
-                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
-                    isActive
-                      ? 'bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] text-white shadow-[0_4px_16px_rgba(32,207,198,0.32)]'
-                      : 'text-[#52667A] hover:bg-white/80 hover:text-[#263B50]'
-                  }`}
-                >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Sidebar Collapse Toggle & Academic Credit Footer */}
-          <div className="border-t border-[#70CFFF]/30 p-3 space-y-2">
-            {!sidebarCollapsed && (
-              <div className="rounded-xl glass-subcard p-3 text-[11px] text-[#52667A]">
-                <div className="font-bold text-[#263B50]">
-                  Asansol Engineering College
-                </div>
-                <div className="mt-0.5 font-mono text-[#0D9488] font-semibold">
-                  CSE · Group 4 · 2026–2027
-                </div>
-              </div>
-            )}
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#70CFFF]/35 bg-white/75 py-2 text-xs font-semibold text-[#52667A] hover:text-[#263B50] hover:bg-white cursor-pointer"
-            >
-              {sidebarCollapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
-                <>
-                  <ChevronLeft className="h-4 w-4" />
-                  <span>Collapse Sidebar</span>
-                </>
-              )}
-            </button>
-          </div>
-        </aside>
-
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 z-40 flex lg:hidden no-print">
-            <div
-              className="fixed inset-0 bg-[#040D1A]/50 backdrop-blur-xs"
-              onClick={() => setMobileMenuOpen(false)}
-            />
-            <div
-              className={`relative z-50 flex w-72 flex-col justify-between p-4 border-r shadow-2xl overflow-y-auto backdrop-blur-2xl ${
-                isNight
-                  ? 'bg-[#07162C]/95 border-[#00F2FE]/30'
-                  : 'bg-white/92 border-[#70CFFF]/40'
-              }`}
-            >
-              <div className="space-y-1">
-                <div className="flex items-center justify-between px-2 pb-3 border-b border-[#70CFFF]/30 mb-2">
-                  <span className="text-xs font-mono font-bold text-[#0D9488]">
-                    RIVER INTELLIGENCE MODULES
-                  </span>
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 text-[#52667A] hover:text-[#263B50]"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-                {SIDEBAR_ITEMS.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
+      {/* Main Spacious Editorial Workspace */}
+      <div className="relative z-10 mx-auto w-full max-w-6xl flex-1 flex flex-col justify-between px-4 pt-6 pb-24 sm:px-8 lg:pb-12">
+        <main className="flex-1 w-full space-y-6">
+          {/* Segmented Analytical Lens Switcher when inside Live Monitoring family */}
+          {isMonitoringFamily && (
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl glass-card px-4 py-2.5 no-print">
+              <span className="text-[11px] font-mono tracking-[0.16em] uppercase text-[#71869A]">
+                Monitoring &amp; Analytical Lenses
+              </span>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {MONITORING_SUB_LENSES.map((lens) => {
+                  const active = activeTab === lens.id;
                   return (
                     <button
-                      key={item.id}
-                      onClick={() => navigateTo(item.id)}
-                      className={`min-h-[44px] flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold transition-all cursor-pointer ${
-                        isActive
-                          ? 'bg-gradient-to-r from-[#20CFC6] to-[#0EA5E9] text-white shadow-sm'
-                          : 'text-[#52667A] hover:bg-[#EDF8FF] hover:text-[#263B50]'
+                      key={lens.id}
+                      onClick={() => navigateTo(lens.id)}
+                      className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${
+                        active
+                          ? 'bg-[#20CFC6] text-white'
+                          : 'text-[#52667A] hover:text-[#263B50]'
                       }`}
                     >
-                      <Icon className="h-4 w-4 shrink-0" />
-                      <span>{item.label}</span>
+                      {lens.label}
                     </button>
                   );
                 })}
               </div>
-
-              <div className="mt-4 border-t border-[#70CFFF]/30 pt-3 space-y-2.5">
-                <button
-                  onClick={toggleTheme}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#20CFC6]/45 bg-white/80 py-2.5 text-xs font-bold text-[#263B50] cursor-pointer"
-                >
-                  {isNight ? (
-                    <>
-                      <Sun className="h-4 w-4 text-amber-400" />
-                      <span>Switch to Day Mode</span>
-                    </>
-                  ) : (
-                    <>
-                      <Moon className="h-4 w-4 text-[#0D9488]" />
-                      <span>Switch to Night Mode</span>
-                    </>
-                  )}
-                </button>
-                <div className="rounded-xl glass-subcard p-2.5 text-[11px] text-[#52667A]">
-                  Asansol Engineering College · CSE Group 4 (Rolls 139, 140, 141, 142, 144)
-                </div>
-              </div>
             </div>
+          )}
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {activeTab === 'overview' && (
+                <OverviewView
+                  stations={stations}
+                  selectedStation={selectedStation}
+                  onSelectStation={setSelectedStation}
+                  timeSeries={timeSeries}
+                  onNavigate={navigateTo}
+                  isSimulationRunning={isSimulationRunning}
+                  onToggleSimulation={() => {
+                    const next = !isSimulationRunning;
+                    setIsSimulationRunning(next);
+                    appendLog(
+                      'SIMULATION',
+                      next
+                        ? 'Started automated sensor variation.'
+                        : 'Paused sensor variation.'
+                    );
+                  }}
+                  alerts={alerts}
+                  activityLog={activityLog}
+                  hotspots={INITIAL_GIS_HOTSPOTS}
+                  droneObservations={droneObservations}
+                />
+              )}
+
+              {activeTab === 'live-monitoring' && (
+                <LiveMonitoringView
+                  stations={stations}
+                  selectedStation={selectedStation}
+                  onSelectStation={setSelectedStation}
+                  isSimulationRunning={isSimulationRunning}
+                  simulationSpeedMs={simulationSpeedMs}
+                  onStartSimulation={() => {
+                    setIsSimulationRunning(true);
+                    appendLog('SIMULATION', 'Started live simulated variation stream.');
+                  }}
+                  onPauseSimulation={() => {
+                    setIsSimulationRunning(false);
+                    appendLog('SIMULATION', 'Paused live simulated variation stream.');
+                  }}
+                  onResetSimulation={handleResetSimulation}
+                  onChangeSpeed={(ms) => {
+                    setSimulationSpeedMs(ms);
+                    appendLog('SIMULATION', `Changed simulation interval to ${ms}ms.`);
+                  }}
+                  onManualUpdateReadings={handleManualUpdateReadings}
+                  onGenerateSingleStepReading={() => {
+                    stepSimulationReadings();
+                    appendLog(
+                      'SIMULATION',
+                      'Generated single demonstration reading across Stations A, B, and C.'
+                    );
+                  }}
+                />
+              )}
+
+              {activeTab === 'water-analytics' && (
+                <WaterAnalyticsView stations={stations} timeSeries={timeSeries} />
+              )}
+
+              {activeTab === 'ai-risk' && (
+                <AiRiskAssessmentView
+                  stations={stations}
+                  selectedStation={selectedStation}
+                  onSelectStation={setSelectedStation}
+                />
+              )}
+
+              {activeTab === 'heavy-metals' && (
+                <HeavyMetalAnalysisView
+                  stations={stations}
+                  selectedStation={selectedStation}
+                  onSelectStation={setSelectedStation}
+                />
+              )}
+
+              {activeTab === 'gis-map' && (
+                <GisPollutionMapView
+                  stations={stations}
+                  selectedStation={selectedStation}
+                  onSelectStation={setSelectedStation}
+                  hotspots={INITIAL_GIS_HOTSPOTS}
+                  droneObservations={droneObservations}
+                  isSimulationRunning={isSimulationRunning}
+                  onNavigate={navigateTo}
+                />
+              )}
+
+              {activeTab === 'drone-intelligence' && (
+                <DroneIntelligenceView
+                  droneObservations={droneObservations}
+                  onAddDroneObservation={handleAddDroneObservation}
+                  selectedStation={selectedStation}
+                  onSelectStation={setSelectedStation}
+                />
+              )}
+
+              {activeTab === 'alerts-reports' && (
+                <AlertsReportsView
+                  stations={stations}
+                  alerts={alerts}
+                  onToggleAcknowledgeAlert={handleToggleAcknowledgeAlert}
+                />
+              )}
+
+              {activeTab === 'system-architecture' && (
+                <SystemArchitectureView onNavigate={navigateTo} />
+              )}
+
+              {activeTab === 'about-project' && (
+                <AboutProjectView onNavigate={navigateTo} />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+
+        {/* Minimal Institution-Neutral Footer */}
+        <footer className="mt-16 border-t border-[#70CFFF]/25 pt-6 text-xs text-[#71869A] no-print">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2">
+              <span className="font-medium tracking-[0.1em] uppercase text-[#263B50]">
+                River Intelligence
+              </span>
+              <span>·</span>
+              <span>Environmental Hydrological Intelligence Platform</span>
+            </div>
+            <button
+              onClick={() => setShowOpeningIntro(true)}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#0D9488] hover:underline cursor-pointer self-start sm:self-auto"
+            >
+              <Sparkles className="h-3 w-3" />
+              <span>Replay Opening Experience</span>
+            </button>
           </div>
-        )}
-
-        {/* Main View Stage */}
-        <div className="flex-1 min-w-0 flex flex-col justify-between pb-20 lg:pb-8">
-          <main className="flex-1 w-full">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {activeTab === 'overview' && (
-                  <OverviewView
-                    stations={stations}
-                    selectedStation={selectedStation}
-                    onSelectStation={setSelectedStation}
-                    timeSeries={timeSeries}
-                    onNavigate={navigateTo}
-                    isSimulationRunning={isSimulationRunning}
-                    onToggleSimulation={() => {
-                      const next = !isSimulationRunning;
-                      setIsSimulationRunning(next);
-                      appendLog(
-                        'SIMULATION',
-                        next
-                          ? 'Started automated sensor variation.'
-                          : 'Paused sensor variation.'
-                      );
-                    }}
-                    alerts={alerts}
-                    activityLog={activityLog}
-                    hotspots={INITIAL_GIS_HOTSPOTS}
-                    droneObservations={droneObservations}
-                  />
-                )}
-
-                {activeTab === 'live-monitoring' && (
-                  <LiveMonitoringView
-                    stations={stations}
-                    selectedStation={selectedStation}
-                    onSelectStation={setSelectedStation}
-                    isSimulationRunning={isSimulationRunning}
-                    simulationSpeedMs={simulationSpeedMs}
-                    onStartSimulation={() => {
-                      setIsSimulationRunning(true);
-                      appendLog('SIMULATION', 'Started live simulated variation stream.');
-                    }}
-                    onPauseSimulation={() => {
-                      setIsSimulationRunning(false);
-                      appendLog('SIMULATION', 'Paused live simulated variation stream.');
-                    }}
-                    onResetSimulation={handleResetSimulation}
-                    onChangeSpeed={(ms) => {
-                      setSimulationSpeedMs(ms);
-                      appendLog('SIMULATION', `Changed simulation interval to ${ms}ms.`);
-                    }}
-                    onManualUpdateReadings={handleManualUpdateReadings}
-                    onGenerateSingleStepReading={() => {
-                      stepSimulationReadings();
-                      appendLog(
-                        'SIMULATION',
-                        'Generated single demonstration reading across Stations A, B, and C.'
-                      );
-                    }}
-                  />
-                )}
-
-                {activeTab === 'water-analytics' && (
-                  <WaterAnalyticsView stations={stations} timeSeries={timeSeries} />
-                )}
-
-                {activeTab === 'ai-risk' && (
-                  <AiRiskAssessmentView
-                    stations={stations}
-                    selectedStation={selectedStation}
-                    onSelectStation={setSelectedStation}
-                  />
-                )}
-
-                {activeTab === 'heavy-metals' && (
-                  <HeavyMetalAnalysisView
-                    stations={stations}
-                    selectedStation={selectedStation}
-                    onSelectStation={setSelectedStation}
-                  />
-                )}
-
-                {activeTab === 'gis-map' && (
-                  <GisPollutionMapView
-                    stations={stations}
-                    selectedStation={selectedStation}
-                    onSelectStation={setSelectedStation}
-                    hotspots={INITIAL_GIS_HOTSPOTS}
-                    droneObservations={droneObservations}
-                    isSimulationRunning={isSimulationRunning}
-                    onNavigate={navigateTo}
-                  />
-                )}
-
-                {activeTab === 'drone-intelligence' && (
-                  <DroneIntelligenceView
-                    droneObservations={droneObservations}
-                    onAddDroneObservation={handleAddDroneObservation}
-                    selectedStation={selectedStation}
-                    onSelectStation={setSelectedStation}
-                  />
-                )}
-
-                {activeTab === 'alerts-reports' && (
-                  <AlertsReportsView
-                    stations={stations}
-                    alerts={alerts}
-                    onToggleAcknowledgeAlert={handleToggleAcknowledgeAlert}
-                  />
-                )}
-
-                {activeTab === 'system-architecture' && (
-                  <SystemArchitectureView onNavigate={navigateTo} />
-                )}
-
-                {activeTab === 'about-project' && (
-                  <AboutProjectView onNavigate={navigateTo} />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </main>
-
-          {/* Clean Academic Project Footer (5 Team Members + Replay Intro Option) */}
-          <footer className="mt-8 rounded-2xl glass-panel px-5 py-4 text-xs text-[#52667A] no-print">
-            <div className="flex flex-col gap-2.5 md:flex-row md:items-center md:justify-between">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-extrabold text-[#263B50]">RIVER INTELLIGENCE</span>
-                <span className="text-[#70CFFF]">·</span>
-                <span>Asansol Engineering College (CSE Group 4, 2026–2027)</span>
-                <span className="text-[#70CFFF]">·</span>
-                <button
-                  onClick={() => setShowOpeningIntro(true)}
-                  className="inline-flex items-center gap-1 font-semibold text-[#0D9488] hover:text-[#0284C7] hover:underline cursor-pointer"
-                >
-                  <Sparkles className="h-3 w-3" />
-                  <span>Replay Cinematic Opening</span>
-                </button>
-              </div>
-              <div className="font-medium text-[#263B50]">
-                Team: 139 — Rijoy Biswas · 140 — Rishabh Kumar Shaw · 141 — Rishan Nandi · 142 — Rishav Kumar Pandey · 144 — Ritik Kumar Ram
-              </div>
-            </div>
-          </footer>
-        </div>
+        </footer>
       </div>
 
-      {/* Mobile Bottom Quick-Navigation Bar */}
+      {/* Mobile Bottom 5-Tab Navigation Bar */}
       <nav
         aria-label="Mobile Bottom Navigation"
-        className={`fixed bottom-0 left-0 right-0 z-30 grid grid-cols-5 items-center border-t backdrop-blur-xl lg:hidden no-print ${
-          isNight
-            ? 'border-[#00F2FE]/25 bg-[#07162C]/92 shadow-[0_-4px_24px_rgba(0,0,0,0.45)]'
-            : 'border-[#70CFFF]/40 bg-white/92 shadow-[0_-4px_20px_rgba(38,59,80,0.06)]'
-        }`}
+        className="fixed bottom-0 left-0 right-0 z-30 grid grid-cols-5 items-center border-t border-[#70CFFF]/30 glass-panel md:hidden no-print"
       >
-        {[
-          { id: 'overview' as NavigationTab, label: 'Overview', icon: LayoutDashboard },
-          { id: 'live-monitoring' as NavigationTab, label: 'Live IoT', icon: Activity },
-          { id: 'water-analytics' as NavigationTab, label: 'Charts', icon: BarChart3 },
-          { id: 'gis-map' as NavigationTab, label: 'GIS Map', icon: Map },
-        ].map((tab) => {
+        {ESSENTIAL_NAV_TABS.map((tab) => {
           const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
+          const isActive = topNavResolvedId === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => navigateTo(tab.id)}
-              className={`min-h-[52px] flex flex-col items-center justify-center py-1 text-[10px] font-semibold transition-colors cursor-pointer ${
-                isActive ? 'text-[#0D9488] font-bold' : 'text-[#71869A] hover:text-[#263B50]'
+              className={`min-h-[54px] flex flex-col items-center justify-center py-1 text-[10px] font-medium transition-colors cursor-pointer ${
+                isActive ? 'text-[#0D9488] font-semibold' : 'text-[#71869A] hover:text-[#263B50]'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -814,14 +652,6 @@ function AppShell() {
             </button>
           );
         })}
-
-        <button
-          onClick={() => setMobileMenuOpen(true)}
-          className="min-h-[52px] flex flex-col items-center justify-center py-1 text-[10px] font-semibold text-[#52667A] hover:text-[#263B50] cursor-pointer"
-        >
-          <Menu className="h-4 w-4 text-[#0D9488]" />
-          <span className="mt-1 truncate">All Modules</span>
-        </button>
       </nav>
     </div>
   );
